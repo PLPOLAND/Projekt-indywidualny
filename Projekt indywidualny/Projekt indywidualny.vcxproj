@@ -135,7 +135,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gracz.cpp" />
+    <ClCompile Include="Gracz_Ludzki.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="element.cpp" />
+    <ClCompile Include="Pion.cpp" />
+    <ClCompile Include="Plansza.cpp" />
+    <ClCompile Include="Pole_szachowe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="element.h" />
+    <ClInclude Include="Gracz.h" />
+    <ClInclude Include="Gracz_Ludzki.h" />
+    <ClInclude Include="Pion.h" />
+    <ClInclude Include="Plansza.h" />
+    <ClInclude Include="Pole_szachowe.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

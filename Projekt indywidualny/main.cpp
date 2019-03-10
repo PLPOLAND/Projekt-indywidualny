@@ -1,28 +1,35 @@
 #include <SFML/Graphics.hpp>
 
+#include "Plansza.h"
+#include "Gracz_Ludzki.h"
+//#include "Pion.h"
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
 	window.setFramerateLimit(60);
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(sf::Vector2f(100, 200));
 
+	Plansza plansza;
+	Gracz_Ludzki tmp;
 	while (window.isOpen())
 	{
+		auto t = plansza.pole[0][0];
+		auto p = plansza.Pionki;
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 			if (event.type == sf::Event::KeyPressed) {
-				shape.setFillColor(sf::Color::Red);
-				shape.setPosition(sf::Vector2f(200, 200));
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				tmp.ruch(0, sf::Vector2u(0,1));
 			}
 		}
-		
+
+
 		window.clear();
-		window.draw(shape);
+		plansza.draw(window);
 		window.display();
 	}
 
