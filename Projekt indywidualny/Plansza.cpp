@@ -14,19 +14,18 @@ Plansza::Plansza()
 	{
 		float width = 0;
 
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j <8; j++)
 		{
+			pole[j][i].setPosition(sf::Vector2f(width, height));
+			pole[j][i].update();
 
-			
-			pole[i][j].setPosition(sf::Vector2f(width,height));
-			pole[i][j].update();
-			if ((i+j)%2==0)
+			if ((i+j)%2==0)//Jesli suma indexów jest parzysta to ustaw kolor pola na czarny
 			{
-				pole[i][j].setFillColor(sf::Color(255, 220, 185));
+				pole[j][i].set_kolor(Pole_szachowe::CZARNY);
 			}
 			else
 			{
-				pole[i][j].setFillColor(sf::Color(233, 107, 57));
+				pole[j][i].set_kolor(Pole_szachowe::BIALY);
 			}
 			
 			width += SZEROKOSC;
@@ -34,11 +33,18 @@ Plansza::Plansza()
 
 		height += WYSOKOSC;
 	}
-	for (int i = 0; i < 32; i++)//Stworzenie pionków
+	for (int i = 0; i < 16; i++)//Stworzenie pionków
 	{
 		Pionki.push_back(new Pion());
 	}
-	for_each(Pionki.begin(), Pionki.end(), [&](Pion* t) { t->setPosition(pole[t->pozycja_na_planszy[0]][t->pozycja_na_planszy[1]].PozycjaIkony); t->set_size(100, 100); pole[t->pozycja_na_planszy[0]][t->pozycja_na_planszy[1]].zajete = true; });//usawienie na plansy i ustawienie rozmiaru
+	cout << "piony" << endl;
+	for_each(Pionki.begin(), Pionki.end(), [&](Pion* t) { 
+		t->setPosition(pole[t->pozycja_na_planszy.x][t->pozycja_na_planszy.y].PozycjaIkony);
+		t->set_size(100, 100); 
+		pole[t->pozycja_na_planszy.x][t->pozycja_na_planszy.y].zajete = true; 
+		});//ustawienie na plansy i ustawienie rozmiaru
+
+	Plansza::update_p();
 }
 
 
@@ -76,36 +82,149 @@ void Plansza::move_P(Gracz * gracz, unsigned char ID, sf::Vector2u wsp)
 	}
 	else
 	{
-		auto wsk = pole[wsp.x][wsp.y];//wskaŸnik na pole docelowe
+		auto wsk = &pole[wsp.x][wsp.y];//wskaŸnik na pole docelowe
 
-		if (wsk.zajete==false)
+		if (wsk->zajete==false)
 		{
-			cout << wsk.zajete;
+			wsk->zajete = true;//zajêcie pola
 
-			wsk.zajete = true;//zajêcie pola
-
-			pole[pionek->pozycja_na_planszy[0]][pionek->pozycja_na_planszy[1]].zajete = false;//zwolnienie poprzedniego pola
+			pole[pionek->pozycja_na_planszy.x][pionek->pozycja_na_planszy.y].zajete = false;//zwolnienie poprzedniego pola
 
 			pionek->move(wsp);//zapisanie wspó³rzêdnych nowego pola
 
-			pionek->setPosition(wsk.PozycjaIkony);//ustawienie wspó³rzêdnych do rysowania
+			pionek->setPosition(wsk->PozycjaIkony);//ustawienie wspó³rzêdnych do rysowania
 			
-			//cout << "Plansza::move_P" << endl;
-			//cout << wsp.x << " " << wsp.y <<endl;
-			//cout << wsk.PozycjaIkony.x <<" "<< wsk.PozycjaIkony.y<<endl;
+			Plansza::update_p();
+
 
 		}
 		else
 		{
-			cout << wsk.zajete;
+			cout << "Pole "<< wsp.x<<" "<< wsp.y  << " jest zajete"<< endl;
 			//TODO
 		}
 	}
+	
+}
 
+void Plansza::trigg(sf::Vector2u t)
+{
+	pole[t.x][t.y].set_trigg();
+}
+
+void Plansza::untrigg(sf::Vector2u t)
+{
+	pole[t.x][t.y].unset_trigg();
+}
+
+void Plansza::path(sf::Vector2u t)
+{
+	pole[t.x][t.y].set_path();
+}
+
+void Plansza::unpath(sf::Vector2u t)
+{
+	pole[t.x][t.y].unset_path();
 }
 
 sf::Vector2f Plansza::get_poz_pola(sf::Vector2u t)
 {
 	
 	return pole[t.x][t.y].PozycjaIkony;
+}
+
+bool Plansza::czy_pionek_nalezy(sf::Vector2u kordynaty, Gracz* gracz)
+{
+	Pion* pionek;
+	auto pred = [&](Pion* pion) { 
+		if (pion->pozycja_na_planszy.x == kordynaty.x && pion->pozycja_na_planszy.y == kordynaty.y) {
+			return true;
+		}
+		else
+			return false;
+	};
+
+	pionek = *(find_if(Pionki.begin(), Pionki.end(), pred));//znalezienie odpowiedniego pionka i wy³uskanie go z kontenera
+	
+	if (pionek == nullptr)
+	{
+		return false;
+	}
+
+	if (pionek->wlasciciel == gracz->ID)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Plansza::czy_pole_zajete(sf::Vector2u kordynaty)
+{
+	if (pole[kordynaty.x][kordynaty.y].zajete==true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+int Plansza::get_id_piona(sf::Vector2u kordynaty)
+{
+	Pion* pionek;
+	auto pred = [&](Pion* pion) {
+		if (pion->pozycja_na_planszy.x == kordynaty.x && pion->pozycja_na_planszy.y == kordynaty.y) {
+			return true;
+		}
+		else
+			return false;
+	};
+
+	pionek = *(find_if(Pionki.begin(), Pionki.end(), pred));
+
+	if (pionek != nullptr){
+		return pionek->ID;
+	}
+	else {//TODO:
+		return -1;
+	}
+}
+
+void Plansza::update_p()
+{
+	for_each(Pionki.begin(), Pionki.end(), [&](Pion* t) {
+		t->update();
+	});//usawienie na plansy i ustawienie rozmiaru
+}
+
+Pion* Plansza::get_pion(sf::Vector2u kordynaty)
+{
+	auto pred = [&](Pion* pion) {
+		if (pion->pozycja_na_planszy.x == kordynaty.x && pion->pozycja_na_planszy.y == kordynaty.y) {
+			return true;
+		}
+		else
+			return false;
+	};
+
+	return *(find_if(Pionki.begin(), Pionki.end(), pred));
+}
+
+void Plansza::print()
+{
+
+	for (int i = 0; i < 8; i++)
+	{
+		cout << i << " ";
+		for (int j = 0; j < 8; j++)
+		{
+			cout << pole[i][j].zajete << " ";
+		}
+		cout << endl;
+	}
+
 }
