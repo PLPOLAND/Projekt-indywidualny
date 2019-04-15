@@ -39,43 +39,63 @@ void Pole_szachowe::set_kolor(Kolor_Pola k)
 
 void Pole_szachowe::set_trigg()
 {
-	aktywne = true;
-	this->setFillColor(kolor_trigg);
+	flagi.trig = true;
+	this->koloruj();
 }
 
 void Pole_szachowe::unset_trigg()
 {
-	aktywne = false;
-	if (kolor == CZARNY)
-	{
-		this->setFillColor(kolor_cz);
-	}
-	else
-	{
-		this->setFillColor(kolor_b);
-	}
+	flagi.trig = false;
+	this->koloruj();
 }
 
 bool Pole_szachowe::get_trigg()
 {
-	return aktywne;
+	return flagi.trig;
 }
 
 void Pole_szachowe::set_path()
 {
-	czy_ruch = true;
-	this->setFillColor(kolor_path);
+	flagi.path = true;
+	this->koloruj();
 }
 
 void Pole_szachowe::unset_path()
 {
-	czy_ruch = false;
-	if (kolor == CZARNY)
+	flagi.path = false;
+	this->koloruj();
+}
+
+void Pole_szachowe::koloruj()
+{
+	if (flagi.false_all())
 	{
-		this->setFillColor(kolor_cz);
+		//std::cout << "kolor_bazowy";
+		if (kolor == CZARNY)
+		{
+			this->setFillColor(kolor_cz);
+		}
+		else
+		{
+			this->setFillColor(kolor_b);
+		}
 	}
-	else
+	else if (flagi.trig == true)
 	{
-		this->setFillColor(kolor_b);
+		//std::cout << "kolor_trigg";
+		this->setFillColor(kolor_trigg);
 	}
+	else if (flagi.path == true) {
+		//std::cout << "kolor_path";
+		this->setFillColor(kolor_path);
+	}
+}
+
+Pole_szachowe::Flags::Flags(): trig(false), path(false)
+{
+}
+
+bool Pole_szachowe::Flags::false_all()
+{
+	return trig == false && path == false;
 }

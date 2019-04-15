@@ -1,6 +1,16 @@
 #pragma once
 #include "element.h"
 #include <vector>
+#include "Pole_szachowe.h"
+
+enum Kierunek
+{
+	BRAK,
+	LG,
+	RG,
+	LD,
+	RD
+};
 
 class Pion : public element
 {
@@ -12,8 +22,12 @@ public:
 	//Wspó³rzêdne na planszy
 	sf::Vector2u pozycja_na_planszy;
 	
-	//Pola do mozliwego ruchu;
+	//Pola do mozliwego ruchu
 	vector<sf::Vector2u> pola_ruchu;
+
+	//Sciezki ruchu (dla AI)
+
+	vector<vector<sf::Vector2u>> paths;
 
 	//ID piona
 	unsigned char ID;
@@ -36,6 +50,14 @@ public:
 	void update();
 
 	///
-	void spr_zajetosc_sasiadow(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10));
+	void spr_zajetosc_sasiadow(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10),Kierunek kierunek = BRAK);
+	void spr_zajetosc_sasiadow2(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10), Kierunek kierunek = BRAK);
+
+	///zwraca wspolrzedne z podanym offsetem
+	sf::Vector2u get_wsp(sf::Vector2u wsp, sf::Vector2i offset);
+
+	///zwraca PoleSzachowe o podanych wspolrzednych z ewentualnym offsetem
+	Pole_szachowe* get_pole(sf::Vector2u wsp, sf::Vector2i offset = sf::Vector2i(0, 0));
+
 };
  

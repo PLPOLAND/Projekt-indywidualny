@@ -10,7 +10,8 @@ int main()
 	window.setFramerateLimit(60);
 
 	Plansza plansza;
-	Gracz_Ludzki tmp;
+	Gracz_Ludzki gracz1;
+	Gracz_Ludzki gracz2;
 	
 	plansza.print();
 	while (window.isOpen())
@@ -28,7 +29,22 @@ int main()
 				tmp.ruch(0, sf::Vector2u(0,1));
 			}*/
 		}
-		tmp.tic(event,window);
+		if (gracz1.czy_ruch == false)
+		{
+			gracz2.tic(event, window);
+			if (gracz2.czy_ruch == false)
+			{
+				gracz1.czy_ruch = true;
+			}
+		}
+		else
+		{
+			gracz1.tic(event, window);
+			if (gracz1.czy_ruch == false)
+			{
+				gracz2.czy_ruch = true;
+			}
+		}
 		window.clear();
 		plansza.draw(window);
 		window.display();

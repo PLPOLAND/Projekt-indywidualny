@@ -19,13 +19,13 @@ Plansza::Plansza()
 			pole[j][i].setPosition(sf::Vector2f(width, height));
 			pole[j][i].update();
 
-			if ((i+j)%2==0)//Jesli suma indexów jest parzysta to ustaw kolor pola na czarny
+			if ((i+j)%2==0)//Jesli suma indexów jest parzysta to ustaw kolor pola na bia³y
 			{
-				pole[j][i].set_kolor(Pole_szachowe::CZARNY);
+				pole[j][i].set_kolor(Pole_szachowe::BIALY);
 			}
 			else
 			{
-				pole[j][i].set_kolor(Pole_szachowe::BIALY);
+				pole[j][i].set_kolor(Pole_szachowe::CZARNY);
 			}
 			
 			width += SZEROKOSC;
@@ -43,7 +43,7 @@ Plansza::Plansza()
 		t->set_size(100, 100); 
 		pole[t->pozycja_na_planszy.x][t->pozycja_na_planszy.y].zajete = true; 
 		});//ustawienie na plansy i ustawienie rozmiaru
-
+	Plansza::print();
 	Plansza::update_p();
 }
 
@@ -135,6 +135,13 @@ sf::Vector2f Plansza::get_poz_pola(sf::Vector2u t)
 
 bool Plansza::czy_pionek_nalezy(sf::Vector2u kordynaty, Gracz* gracz)
 {
+	
+	if (czy_pole_zajete(kordynaty) == false)
+	{
+		return false;
+	}
+	
+	
 	Pion* pionek;
 	auto pred = [&](Pion* pion) { 
 		if (pion->pozycja_na_planszy.x == kordynaty.x && pion->pozycja_na_planszy.y == kordynaty.y) {
@@ -143,8 +150,9 @@ bool Plansza::czy_pionek_nalezy(sf::Vector2u kordynaty, Gracz* gracz)
 		else
 			return false;
 	};
+	
+	pionek = *(find_if(Pionki.begin(), Pionki.end(), pred));//znalezienie odpowiedniego pionka i wy³uskanie go z vektora
 
-	pionek = *(find_if(Pionki.begin(), Pionki.end(), pred));//znalezienie odpowiedniego pionka i wy³uskanie go z kontenera
 	
 	if (pionek == nullptr)
 	{

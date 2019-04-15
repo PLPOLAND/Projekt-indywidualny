@@ -36,6 +36,16 @@ public:
 	};
 	Kolor_Pola kolor;
 
+
+	struct Flags
+	{
+		Flags();
+		bool false_all();
+		bool trig;
+		bool path;
+	};
+
+	Flags flagi;
 	///Uaktualnia  wspó³rzêdne po³o¿enia ikony na polu;
 	void update();
 
@@ -53,6 +63,8 @@ public:
 	void set_path();
 	///Odznacz oznaczenie jako pole ruchu
 	void unset_path();
-
+	
+	///Kolorowanie
+	void koloruj();
 };
 
