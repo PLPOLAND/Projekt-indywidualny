@@ -117,12 +117,14 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 				window.pollEvent(_event);
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))//Wybranie
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 		{
 			cout << "Enter" << endl;
-			if (Plansza::czy_pole_zajete(last_trigg) == false) {
+
+			auto pion = Plansza::get_pion(wsp_piona);
+			if (Plansza::czy_pole_zajete(last_trigg) == false && pion->pola_ruchu.end() != find(pion->pola_ruchu.begin(),pion->pola_ruchu.end(),last_trigg) ) {
 				
-				auto pion = Plansza::get_pion(wsp_piona);
+				//auto pion = Plansza::get_pion(wsp_piona);
 				auto pred = [&](sf::Vector2u vec) {
 					Plansza::unpath(vec);
 				};
@@ -141,7 +143,7 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 			else
 			{
 				//TODO
-				cout << "Zajete!";
+				cout << "Zajete!/ niedozwolone";
 			}
 			while (_event.type != sf::Event::KeyReleased)
 			{

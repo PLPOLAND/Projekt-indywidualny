@@ -40,14 +40,15 @@ public:
 
 	///Zwraca wartosc boolwska czy pionek o podanych kordynatach nalezy do danego gracza
 	static bool czy_pionek_nalezy(sf::Vector2u, Gracz* );
-
+	///Zwraca true jeúli pole jest zajete
 	static bool czy_pole_zajete(sf::Vector2u);
-
+	///Zwraca id piona na podanych wspolrzednych
 	static int get_id_piona(sf::Vector2u);
 	
 	static void update_p();
-
+	///Zwraca wskaünik na piona
 	static Pion* get_pion(sf::Vector2u);
+
 	static void print();
 };
 

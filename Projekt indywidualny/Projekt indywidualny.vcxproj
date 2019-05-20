@@ -136,20 +136,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Gracz.cpp" />
+    <ClCompile Include="Gracz_AI.cpp" />
     <ClCompile Include="Gracz_Ludzki.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="element.cpp" />
+    <ClCompile Include="Menu_List.cpp" />
     <ClCompile Include="Pion.cpp" />
     <ClCompile Include="Plansza.cpp" />
     <ClCompile Include="Pole_szachowe.cpp" />
+    <ClCompile Include="Przycisk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="element.h" />
     <ClInclude Include="Gracz.h" />
+    <ClInclude Include="Gracz_AI.h" />
     <ClInclude Include="Gracz_Ludzki.h" />
+    <ClInclude Include="Menu_List.h" />
     <ClInclude Include="Pion.h" />
     <ClInclude Include="Plansza.h" />
     <ClInclude Include="Pole_szachowe.h" />
+    <ClInclude Include="Przycisk.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

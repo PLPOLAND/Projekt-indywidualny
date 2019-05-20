@@ -150,10 +150,17 @@ void Pion::spr_zajetosc_sasiadow(sf::Vector2u main, vector<sf::Vector2u>& pola, 
 	}
 	else if (poz0 != last && poz0_2 == true && get_pole(poz0)->zajete == true && get_pole(poz0, poz0_offset)->zajete == false)
 	{
-		pola.push_back(get_wsp(poz0, poz0_offset));
+		if (pola.end() == find(pola.begin(),pola.end(),get_wsp(poz0, poz0_offset)) || pola.size() == 0)
+		{
+			pola.push_back(get_wsp(poz0, poz0_offset));
+			tmp_path.push_back(get_wsp(poz0, poz0_offset));
+			tmp_path_iter++;
+		}
+		else
+		{
+			return;
+		}
 
-		tmp_path.push_back(get_wsp(poz0, poz0_offset));
-		tmp_path_iter++;
 
 		spr_zajetosc_sasiadow(get_wsp(poz0, poz0_offset), pola, poz0, RD);
 		for (int i = tmp_path.size()-1 ; i >= tmp_path_iter; i--)
@@ -177,10 +184,17 @@ void Pion::spr_zajetosc_sasiadow(sf::Vector2u main, vector<sf::Vector2u>& pola, 
 	}
 	else if (poz1 != last && poz1_2 == true && get_pole(poz1)->zajete == true && get_pole(poz1, poz1_offset)->zajete == false)
 	{
-		pola.push_back(get_wsp(poz1, poz1_offset));
+		if (pola.end() == find(pola.begin(),pola.end(), get_wsp(poz1, poz1_offset)) || pola.size() == 0)
+		{
+			pola.push_back(get_wsp(poz1, poz1_offset));
+			tmp_path.push_back(get_wsp(poz1, poz1_offset));
+			tmp_path_iter++;
+		}
+		else
+		{
+			return;
+		}
 
-		tmp_path.push_back(get_wsp(poz1, poz1_offset));
-		tmp_path_iter++;
 
 		spr_zajetosc_sasiadow(get_wsp(poz1, poz1_offset), pola, poz1, RG);
 
@@ -205,10 +219,17 @@ void Pion::spr_zajetosc_sasiadow(sf::Vector2u main, vector<sf::Vector2u>& pola, 
 	}
 	else if (poz2 != last && poz2_2 == true && get_pole(poz2)->zajete == true && get_pole(poz2, poz2_offset)->zajete == false)
 	{
-		pola.push_back(get_wsp(poz2, poz2_offset));
+		if (pola.end() == find(pola.begin(), pola.end(), get_wsp(poz2, poz2_offset)) || pola.size() == 0)
+		{
+			pola.push_back(get_wsp(poz2, poz2_offset));
+			tmp_path.push_back(get_wsp(poz2, poz2_offset));
+			tmp_path_iter++;
+		}
+		else
+		{
+			return;
+		}
 
-		tmp_path.push_back(get_wsp(poz2, poz2_offset));
-		tmp_path_iter++;
 
 		spr_zajetosc_sasiadow(get_wsp(poz2, poz2_offset), pola, poz2, LD);
 
@@ -233,10 +254,18 @@ void Pion::spr_zajetosc_sasiadow(sf::Vector2u main, vector<sf::Vector2u>& pola, 
 	}
 	else if (poz3 != last && poz3_2 == true && get_pole(poz3)->zajete == true && get_pole(poz3, poz3_offset)->zajete == false)
 	{
-		pola.push_back(get_wsp(poz3, poz3_offset));
+		if (pola.end() == find(pola.begin(), pola.end(), get_wsp(poz3, poz3_offset)) || pola.size() == 0)
+		{
+			pola.push_back(get_wsp(poz3, poz3_offset));
 
-		tmp_path.push_back(get_wsp(poz3, poz3_offset));
-		tmp_path_iter++;
+			tmp_path.push_back(get_wsp(poz3, poz3_offset));
+			tmp_path_iter++;
+
+		}
+		else
+		{
+			return;
+		}
 
 		spr_zajetosc_sasiadow(get_wsp(poz3, poz3_offset), pola, poz3, LG);
 

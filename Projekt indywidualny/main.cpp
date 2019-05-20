@@ -2,17 +2,50 @@
 
 #include "Plansza.h"
 #include "Gracz_Ludzki.h"
-//#include "Pion.h"
+#include "Menu_List.h"
+#include "Gracz_AI.h"
+
+void graj() {
+	cout << "Graj" << endl;
+}
+void info() {
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "Skoczek");
+	Menu_List menu(200, 40, 20, 0, 0);
+	menu.dodajPrzycisk("Wyjdz");
+	//menu.getPrzycisk(0)->setFunction();
+	window.setFramerateLimit(60);
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event)) {
+
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.clear();
+		menu.draw(window);
+		window.display();
+	}
+	
+}
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 800), "Skoczek");
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "Skoczek");
 	window.setFramerateLimit(60);
 
+	
 	Plansza plansza;
-	Gracz_Ludzki gracz1;
+	Gracz_AI gracz1;
 	Gracz_Ludzki gracz2;
 	
+	Menu_List menu(200,40,20,0,800);
+	menu.dodajPrzycisk("Graj");
+	menu.getPrzycisk(0)->setFunction(graj);
+	menu.dodajPrzycisk("Info");
+	menu.getPrzycisk(1)->setFunction(info);
+	menu.setActive(0);
+
 	plansza.print();
 	while (window.isOpen())
 	{
@@ -23,32 +56,36 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::KeyPressed) {
-			}
-			/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				tmp.ruch(0, sf::Vector2u(0,1));
-			}*/
 		}
-		if (gracz1.czy_ruch == false)
-		{
-			gracz2.tic(event, window);
-			if (gracz2.czy_ruch == false)
-			{
-				gracz1.czy_ruch = true;
-			}
+		if (menu.activate == true) {
+			menu.tic(event,window);
 		}
 		else
 		{
-			gracz1.tic(event, window);
-			if (gracz1.czy_ruch == false)
+			if (gracz2.czy_ruch == false)
 			{
-				gracz2.czy_ruch = true;
+				gracz1.tic(event, window);
+				if (gracz1.czy_ruch == false)
+				{
+					gracz2.czy_ruch = true;
+				}
+				gracz2.tic(event, window);
+			}
+			else
+			{
+				gracz2.tic(event, window);
+				if (gracz1.czy_ruch == false)
+				{
+					gracz1.czy_ruch = true;
+				}
 			}
 		}
+		
 		window.clear();
+		menu.draw(window);
 		plansza.draw(window);
 		window.display();
 	}
-
+	
 	return 0;
 }
