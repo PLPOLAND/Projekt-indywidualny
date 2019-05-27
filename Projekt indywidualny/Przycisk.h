@@ -30,5 +30,6 @@ public:
 	void run();
 
 	void draw(sf::RenderWindow& win);
+	friend class Menu_List;
 };
 

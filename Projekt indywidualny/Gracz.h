@@ -20,8 +20,8 @@ public:
 
 
 
-	virtual void ruch(unsigned char id_p, sf::Vector2u wsp) = 0;
-	//virtual void tic(...) = 0;
+	//virtual void ruch(unsigned char id_p, sf::Vector2u wsp) = 0;
+	virtual void tic(sf::Event&, sf::RenderWindow&) = 0;
 
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Gracz.h"
+#include "Pion.h"
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -26,8 +27,13 @@ class Gracz_AI : public Gracz
 	};
 
 	vector<Gracz_AI::Ruch*> ruchy;
+	
+	Pion* pionki[8];
 
 	int ruch_number;
+
+	vector<sf::Vector2u> ending_path;
+	Pion* ending_pion;
 
 public:
 
@@ -36,6 +42,10 @@ public:
 	Gracz_AI();
 	~Gracz_AI();
 
-	void ruch(unsigned char id_p, sf::Vector2u wsp);
+	void ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window);
+	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
 	void tic(sf::Event& _event, sf::RenderWindow& window);
+	void find_ending_path(Pion*);
+
+
 };

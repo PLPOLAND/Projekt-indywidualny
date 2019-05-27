@@ -49,8 +49,7 @@ int main()
 	plansza.print();
 	while (window.isOpen())
 	{
-		//auto t = plansza.pole[0][0];
-		auto p = plansza.Pionki;
+		
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -62,6 +61,7 @@ int main()
 		}
 		else
 		{
+			menu.clear();
 			if (gracz2.czy_ruch == false)
 			{
 				gracz1.tic(event, window);
@@ -79,8 +79,18 @@ int main()
 					gracz1.czy_ruch = true;
 				}
 			}
+			int wygrany = plansza.who_win();
+			if (wygrany == 0)
+			{
+				menu.activate = true;
+				menu.dodajPrzycisk("Wgral Gracz Czarny");
+			}
+			else if (wygrany == 1)
+			{
+				menu.activate = true;
+				menu.dodajPrzycisk("Wygral Gracz Bialy");
+			}
 		}
-		
 		window.clear();
 		menu.draw(window);
 		plansza.draw(window);

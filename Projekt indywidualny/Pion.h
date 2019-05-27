@@ -26,8 +26,11 @@ public:
 	vector<sf::Vector2u> pola_ruchu;
 
 	//Sciezki ruchu (dla AI)
-
 	vector<vector<sf::Vector2u>> paths;
+
+	//Czy pionek jest ju¿ na polu docelowym
+	bool is_win_pos;
+
 
 	//ID piona
 	unsigned char ID;
@@ -49,15 +52,16 @@ public:
 	///zakutalizuj mozliwosci ruchu
 	void update();
 
-	///
+	///sprawdza dostêpne pola ruchu
 	void spr_zajetosc_sasiadow(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10),Kierunek kierunek = BRAK);
-	void spr_zajetosc_sasiadow2(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10), Kierunek kierunek = BRAK);
-
+	
 	///zwraca wspolrzedne z podanym offsetem
 	sf::Vector2u get_wsp(sf::Vector2u wsp, sf::Vector2i offset);
 
 	///zwraca PoleSzachowe o podanych wspolrzednych z ewentualnym offsetem
 	Pole_szachowe* get_pole(sf::Vector2u wsp, sf::Vector2i offset = sf::Vector2i(0, 0));
 
+	///sprawdza czy Pionek jest na wygranej pozycji
+	bool is_win_position();
 };
  

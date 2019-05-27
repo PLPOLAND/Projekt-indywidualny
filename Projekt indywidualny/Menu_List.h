@@ -12,6 +12,7 @@ private:
 	float height;//wysokoœæ przycisków
 	int text_size;//rozmiar textu na przyciskach
 	float top;//górna krawêdŸ nastepnego przycisku
+	float ftop;//górna krawêdŸ górnego przycisku
 	float left;//lewa krawêdŸ przycisków
 	
 	
@@ -30,5 +31,7 @@ public:
 	void setActive(int i);
 	void unsetActive(int i);
 	void tic(sf::Event& _event, sf::RenderWindow& window);
+
+	void clear();
 };
 

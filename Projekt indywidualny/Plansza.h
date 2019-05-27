@@ -45,9 +45,15 @@ public:
 	///Zwraca id piona na podanych wspolrzednych
 	static int get_id_piona(sf::Vector2u);
 	
+	///aktualizacja pionków
 	static void update_p();
 	///Zwraca wskaŸnik na piona
 	static Pion* get_pion(sf::Vector2u);
+	///sprawdzanie wygranej
+	///zwraca ID wygranego gracza
+	///zwraca -1 jeœli nikt nie wygra³
+	int who_win();
+
 
 	static void print();
 };

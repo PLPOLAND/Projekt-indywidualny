@@ -5,9 +5,9 @@ using namespace std;
 
 
 
-Menu_List::Menu_List(float width, float height, int text_size, float top, float left) : width(width), height(height), text_size(text_size), top(top), left(left), active(0)
+Menu_List::Menu_List(float width, float height, int text_size, float top, float left) : width(width), height(height), text_size(text_size), top(top), left(left), active(0), activate(true), ftop(top)
 {
-	activate = true;
+	
 }
 
 Menu_List::~Menu_List()
@@ -58,42 +58,51 @@ void Menu_List::unsetActive(int i)
 
 void Menu_List::tic(sf::Event & _event, sf::RenderWindow & window)
 {
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-			
-		cout << "UP";
-		if (active - 1 >= 0)
-		{
-			this->unsetActive(active);
-			this->setActive(--active);
-		}
-			
-		while (_event.type != sf::Event::KeyReleased)
-		{
-			window.pollEvent(_event);
-		}
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (size()>1)
 	{
-		cout << "DOWN";
-		if (active + 1 < this->size())
-		{
-			this->unsetActive(active);
-			this->setActive(++active);
-		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			if (active - 1 >= 0)
+			{
+				this->unsetActive(active);
+				this->setActive(--active);
+			}
 
-		while (_event.type != sf::Event::KeyReleased)
+			while (_event.type != sf::Event::KeyReleased)
+			{
+				window.pollEvent(_event);
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			window.pollEvent(_event);
+			if (active + 1 < this->size())
+			{
+				this->unsetActive(active);
+				this->setActive(++active);
+			}
+
+			while (_event.type != sf::Event::KeyReleased)
+			{
+				window.pollEvent(_event);
+			}
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 	{
-		this->activate = false;
-		this->at(active)->run();
+		
+		if (this->at(active)->funkcja != nullptr)
+		{
+			this->activate = false;
+			this->at(active)->run();
+		}
 		while (_event.type != sf::Event::KeyReleased)
 		{
 			window.pollEvent(_event);
 		}
 	}
+}
+
+void Menu_List::clear()
+{
+	vector::clear();
+	this->top = ftop;
 }

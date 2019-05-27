@@ -7,7 +7,7 @@
 
 unsigned char Pion::ID_P = 0;
 
-Pion::Pion() : ID(ID_P++) {
+Pion::Pion() : ID(ID_P++), is_win_pos(false) {
 	//Jeœli ID < 8 
 	//pionek czarny gracz 
 	//IDGracza 0
@@ -69,6 +69,7 @@ void Pion::update()
 	paths.clear();
 	spr_zajetosc_sasiadow(pozycja, pola_ruchu);
 
+	is_win_pos = is_win_position();
 
 
 }
@@ -286,129 +287,6 @@ void Pion::spr_zajetosc_sasiadow(sf::Vector2u main, vector<sf::Vector2u>& pola, 
 		paths.push_back(tmp_path);
 	}
 }
-void Pion::spr_zajetosc_sasiadow2(sf::Vector2u main, vector<sf::Vector2u>& pola, sf::Vector2u last, Kierunek hop)
-{
-
-	sf::Vector2u poz0 = last;
-	sf::Vector2u poz1 = last;
-	sf::Vector2u poz2 = last;
-	sf::Vector2u poz3 = last;
-	if (main.x - 1 >= 0 && main.x - 1 < 8 && main.y - 1 >= 0 && main.y - 1 < 8)
-	{
-		poz0 = sf::Vector2u(main.x - 1, main.y - 1);
-	}
-	if (main.x - 1 >= 0 && main.x - 1 < 8 && main.y + 1 >= 0 && main.y + 1 < 8)
-	{
-		poz1 = sf::Vector2u(main.x - 1, main.y + 1);
-	}
-	if (main.x + 1 >= 0 && main.x + 1 < 8 && main.y - 1 >= 0 && main.y - 1 < 8)
-	{
-		poz2 = sf::Vector2u(main.x + 1, main.y - 1);
-	}
-	if (main.x + 1 >= 0 && main.x + 1 < 8 && main.y + 1 >= 0 && main.y + 1 < 8)
-	{
-		poz3 = sf::Vector2u(main.x + 1, main.y + 1);
-	}
-
-	bool poz0_2 = true; //
-	bool poz1_2 = true; //
-	bool poz2_2 = true; //
-	bool poz3_2 = true; //
-
-	if ((int)poz0.x - 1 < 0 || (int)poz0.y - 1 < 0 || poz0 == last || hop == LG)
-	{
-		poz0_2 = false;
-	}
-	if ((int)poz1.x - 1 < 0 || (int)poz1.y + 1 > 7 || poz1 == last || hop == LD)
-	{
-		poz1_2 = false;
-	}
-	if ((int)poz2.x + 1 > 7 || (int)poz2.y - 1 < 0 || poz2 == last || hop == RG)
-	{
-		poz2_2 = false;
-	}
-	if ((int)poz3.x + 1 > 7 || (int)poz3.y + 1 > 7 || poz3 == last || hop == RD)
-	{
-		poz3_2 = false;
-	}
-
-
-
-	sf::Vector2i poz0_offset = sf::Vector2i(-1, -1);
-	sf::Vector2i poz1_offset = sf::Vector2i(-1, 1);
-	sf::Vector2i poz2_offset = sf::Vector2i(1, -1);
-	sf::Vector2i poz3_offset = sf::Vector2i(1, 1);
-
-
-
-	bool czy_wsz_zaj0 = false;
-	bool czy_wsz_zaj1 = false;
-	bool czy_wsz_zaj2 = false;
-	bool czy_wsz_zaj3 = false;
-
-
-	if (poz0 != last && get_pole(poz0)->zajete == false && hop == BRAK)
-	{
-		pola.push_back(poz0);
-	}
-	else if (poz0 != last && poz0_2 == true && get_pole(poz0)->zajete == true && get_pole(poz0, poz0_offset)->zajete == false)
-	{
-		pola.push_back(get_wsp(poz0, poz0_offset));
-		spr_zajetosc_sasiadow(get_wsp(poz0, poz0_offset), pola, poz0, RD);
-	}
-	else
-	{
-		czy_wsz_zaj0 = true;
-	}
-
-	if (poz1 != last && get_pole(poz1)->zajete == false && hop == BRAK)
-	{
-		pola.push_back(poz1);
-	}
-	else if (poz1 != last && poz1_2 == true && get_pole(poz1)->zajete == true && get_pole(poz1, poz1_offset)->zajete == false)
-	{
-		pola.push_back(get_wsp(poz1, poz1_offset));
-		spr_zajetosc_sasiadow(get_wsp(poz1, poz1_offset), pola, poz1, RG);
-	}
-	else
-	{
-		czy_wsz_zaj1 = true;
-	}
-
-	if (poz2 != last && get_pole(poz2)->zajete == false && hop == BRAK)
-	{
-		pola.push_back(poz2);
-	}
-	else if (poz2 != last && poz2_2 == true && get_pole(poz2)->zajete == true && get_pole(poz2, poz2_offset)->zajete == false)
-	{
-		pola.push_back(get_wsp(poz2, poz2_offset));
-		spr_zajetosc_sasiadow(get_wsp(poz2, poz2_offset), pola, poz2, LD);
-	}
-	else
-	{
-		czy_wsz_zaj2 = true;
-	}
-
-	if (poz3 != last && get_pole(poz3)->zajete == false && hop == BRAK)
-	{
-		pola.push_back(poz3);
-	}
-	else if (poz3 != last && poz3_2 == true && get_pole(poz3)->zajete == true && get_pole(poz3, poz3_offset)->zajete == false)
-	{
-		pola.push_back(get_wsp(poz3, poz3_offset));
-		spr_zajetosc_sasiadow(get_wsp(poz3, poz3_offset), pola, poz3, LG);
-	}
-	else
-	{
-		czy_wsz_zaj3 = true;
-	}
-
-	if (czy_wsz_zaj0 == true && czy_wsz_zaj1 == true && czy_wsz_zaj2 == true && czy_wsz_zaj3 == true)
-	{
-		pola.push_back(main);
-	}
-
-}
 
 sf::Vector2u Pion::get_wsp(sf::Vector2u wsp, sf::Vector2i offset) {
 	sf::Vector2u tmp(0, 0);
@@ -429,4 +307,30 @@ Pole_szachowe* Pion::get_pole(sf::Vector2u wsp, sf::Vector2i offset) {
 		cout << "Blad";
 		return &Plansza::pole[0][0];
 	}
-};
+}
+bool Pion::is_win_position()
+{
+	if (this->ID < 8)
+	{
+		if (this->pozycja_na_planszy.y>5)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (this->pozycja_na_planszy.y<2)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return false;
+}

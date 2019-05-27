@@ -206,7 +206,7 @@ void Plansza::update_p()
 {
 	for_each(Pionki.begin(), Pionki.end(), [&](Pion* t) {
 		t->update();
-	});//usawienie na plansy i ustawienie rozmiaru
+	});//usawienie na planszy i ustawienie rozmiaru
 }
 
 Pion* Plansza::get_pion(sf::Vector2u kordynaty)
@@ -220,6 +220,37 @@ Pion* Plansza::get_pion(sf::Vector2u kordynaty)
 	};
 
 	return *(find_if(Pionki.begin(), Pionki.end(), pred));
+}
+
+int Plansza::who_win()
+{
+	bool wygrana = true;
+	for (int i = 0; i < 8 && wygrana == true; i++)
+	{
+		if (Pionki[i]->is_win_pos == false)
+			wygrana = false;
+	}
+	if (wygrana == true)
+	{
+		return 0;
+	}
+	else
+	{
+		wygrana = true;
+		for (int i = 8; i < 16 && wygrana == true; i++)
+		{
+			if (Pionki[i]->is_win_pos == false)
+				wygrana = false;
+		}
+		if (wygrana == true)
+		{
+			return 1;
+		}
+		else
+		{
+			return -1;
+		}
+	}
 }
 
 void Plansza::print()
