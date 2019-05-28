@@ -45,7 +45,8 @@ public:
 	void ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window);
 	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
 	void tic(sf::Event& _event, sf::RenderWindow& window);
-	void find_ending_path(Pion*);
+	bool find_ending_path(Pion*);
+	vector<sf::Vector2u> find_path_to(sf::Vector2u from, sf::Vector2u to);
 
 
 };

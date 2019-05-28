@@ -66,9 +66,9 @@ void Gracz_AI::ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& wind
 	window.clear();
 	Plansza::draw(window);
 	window.display();
-	Sleep(1500);
+	//Sleep(1500);
 	for_each(pion->pola_ruchu.begin(), pion->pola_ruchu.end(), predu);
-	//Sleep(200);
+	
 	Plansza::move_P(this, id_p, wsp);
 }
 
@@ -143,20 +143,151 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 			{
 				if (pionki[i]->is_win_pos == false) {
 					ending_pion = pionki[i];
-					break;
+					if (find_ending_path(ending_pion))
+					{
+						break;
+					}
+					else
+					{
+						continue;
+					}
 				}
 			}
-			find_ending_path(ending_pion);
 		}
-		ruch(ending_pion->ID, ending_path[0], window);
-		ending_path.erase(ending_path.begin());
-		this->czy_ruch = false;
+		else
+		{
+			if (Plansza::czy_pole_zajete(ending_path[0])==true)
+			{
+				ending_path.clear();
+			}
+			else
+			{
+				ruch(ending_pion->ID, ending_path[0], window);
+				ending_path.erase(ending_path.begin());
+				this->czy_ruch = false;
+			}
+		}
 	}
 }
 
-void Gracz_AI::find_ending_path(Pion * pion)
+bool Gracz_AI::find_ending_path(Pion * pion)
 {
-	//TODO:!!!
+	vector<sf::Vector2u> pola_k;//pola koñcowe na które trzeba dostarczyæ pionki
+	sf::Vector2u pole;//Wybrane pole na które trzeba dostarczyæ piona
+
+
+	if (Plansza::czy_pole_zajete(sf::Vector2u(0, 6)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(0, 6));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(1, 7)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(1, 7));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(2, 6)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(2, 6));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(3, 7)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(3, 7));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(4, 6)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(4, 6));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(5, 7)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(5, 7));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(6, 6)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(6, 6));
+	}
+	if (Plansza::czy_pole_zajete(sf::Vector2u(7, 7)) == false)
+	{
+		pola_k.push_back(sf::Vector2u(7, 7));
+	}
+	if (pola_k.size()>0)
+	{
+		for (int i = 0; i < pola_k.size(); i++)
+		{
+			vector<sf::Vector2u> path = find_path_to(pion->pozycja_na_planszy, pola_k[i]);
+			if (path.size() > 0)
+			{
+				ending_path = path;
+			}
+		}
+	}
+	else
+	{
+		if (pion->paths.size()>0)
+		{
+			ending_path = pion->paths[0];
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return true;
+	
+
+}
+
+
+
+
+vector<sf::Vector2u> Gracz_AI::find_path_to(sf::Vector2u from, sf::Vector2u to)
+{
+	vector<sf::Vector2u> path;
+
+	sf::Vector2u now = from;
+	sf::Vector2u last = now;
+
+	while (now!=to)
+	{
+		if (now.x-1 <= to.x) {
+			if (Plansza::czy_pole_zajete(Pion::get_wsp(now,sf::Vector2i(1,-1))) == false && Pion::get_wsp(now, sf::Vector2i(1, -1)) != last)
+			{
+				last = now;
+				now = Pion::get_wsp(now, sf::Vector2i(1, -1));
+				path.push_back(now);
+			}
+			else if(Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(1, 1)) != last)
+			{
+				last = now;
+				now = Pion::get_wsp(now, sf::Vector2i(1, 1));
+				path.push_back(now);
+			}
+			else
+			{
+				break;
+			}
+		}
+		else
+		{
+			if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, -1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, -1)) != last)
+			{
+				last = now;
+				now = Pion::get_wsp(now, sf::Vector2i(-1, -1));
+				path.push_back(now);
+			}
+			else if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, 1)) != last)
+			{
+				last = now;
+				now = Pion::get_wsp(now, sf::Vector2i(-1, 1));
+				path.push_back(now);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+
+	return path;
 }
 
 sf::Vector2u Gracz_AI::find_best_pole_dla_piona(Pion* pionek) {

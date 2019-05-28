@@ -56,7 +56,7 @@ public:
 	void spr_zajetosc_sasiadow(sf::Vector2u, vector<sf::Vector2u>&, sf::Vector2u last = sf::Vector2u(10, 10),Kierunek kierunek = BRAK);
 	
 	///zwraca wspolrzedne z podanym offsetem
-	sf::Vector2u get_wsp(sf::Vector2u wsp, sf::Vector2i offset);
+	static sf::Vector2u get_wsp(sf::Vector2u wsp, sf::Vector2i offset);
 
 	///zwraca PoleSzachowe o podanych wspolrzednych z ewentualnym offsetem
 	Pole_szachowe* get_pole(sf::Vector2u wsp, sf::Vector2i offset = sf::Vector2i(0, 0));
