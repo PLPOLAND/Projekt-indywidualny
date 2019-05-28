@@ -59,7 +59,7 @@ public:
 	static sf::Vector2u get_wsp(sf::Vector2u wsp, sf::Vector2i offset);
 
 	///zwraca PoleSzachowe o podanych wspolrzednych z ewentualnym offsetem
-	Pole_szachowe* get_pole(sf::Vector2u wsp, sf::Vector2i offset = sf::Vector2i(0, 0));
+	static Pole_szachowe* get_pole(sf::Vector2u wsp, sf::Vector2i offset = sf::Vector2i(0, 0));
 
 	///sprawdza czy Pionek jest na wygranej pozycji
 	bool is_win_position();

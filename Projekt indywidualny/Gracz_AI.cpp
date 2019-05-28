@@ -212,7 +212,7 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 	{
 		for (int i = 0; i < pola_k.size(); i++)
 		{
-			vector<sf::Vector2u> path = find_path_to(pion->pozycja_na_planszy, pola_k[i]);
+			vector<sf::Vector2u> path/* = find_path_to(pion->pozycja_na_planszy, pola_k[i])*/;
 			if (path.size() > 0)
 			{
 				ending_path = path;
@@ -237,58 +237,161 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 
 
 
+bool Gracz_AI::find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, Kierunek hop){
 
-vector<sf::Vector2u> Gracz_AI::find_path_to(sf::Vector2u from, sf::Vector2u to)
-{
-	vector<sf::Vector2u> path;
+	static vector<sf::Vector2u> tmp_path;
+	static int tmp_path_iter = (int)tmp_path.size() - 1;
 
-	sf::Vector2u now = from;
-	sf::Vector2u last = now;
+	static bool done = false;
 
-	while (now!=to)
+	if (hop == BRAK)
 	{
-		if (now.x-1 <= to.x) {
-			if (Plansza::czy_pole_zajete(Pion::get_wsp(now,sf::Vector2i(1,-1))) == false && Pion::get_wsp(now, sf::Vector2i(1, -1)) != last)
-			{
-				last = now;
-				now = Pion::get_wsp(now, sf::Vector2i(1, -1));
-				path.push_back(now);
-			}
-			else if(Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(1, 1)) != last)
-			{
-				last = now;
-				now = Pion::get_wsp(now, sf::Vector2i(1, 1));
-				path.push_back(now);
-			}
-			else
-			{
-				break;
-			}
-		}
-		else
-		{
-			if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, -1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, -1)) != last)
-			{
-				last = now;
-				now = Pion::get_wsp(now, sf::Vector2i(-1, -1));
-				path.push_back(now);
-			}
-			else if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, 1)) != last)
-			{
-				last = now;
-				now = Pion::get_wsp(now, sf::Vector2i(-1, 1));
-				path.push_back(now);
-			}
-			else
-			{
-				break;
-			}
-		}
+		tmp_path.clear();
+		tmp_path_iter = (int)tmp_path.size() - 1;
+	}
+	sf::Vector2u poz0 = last;
+	sf::Vector2u poz1 = last;
+	sf::Vector2u poz2 = last;
+	sf::Vector2u poz3 = last;
+	if (from.x - 1 >= 0 && from.x - 1 < 8 && from.y - 1 >= 0 && from.y - 1 < 8)
+	{
+		poz0 = sf::Vector2u(from.x - 1, from.y - 1);
+	}
+	if (from.x - 1 >= 0 && from.x - 1 < 8 && from.y + 1 >= 0 && from.y + 1 < 8)
+	{
+		poz1 = sf::Vector2u(from.x - 1, from.y + 1);
+	}
+	if (from.x + 1 >= 0 && from.x + 1 < 8 && from.y - 1 >= 0 && from.y - 1 < 8)
+	{
+		poz2 = sf::Vector2u(from.x + 1, from.y - 1);
+	}
+	if (from.x + 1 >= 0 && from.x + 1 < 8 && from.y + 1 >= 0 && from.y + 1 < 8)
+	{
+		poz3 = sf::Vector2u(from.x + 1, from.y + 1);
+	}
+
+	bool poz0_2 = true; //
+	bool poz1_2 = true; //
+	bool poz2_2 = true; //
+	bool poz3_2 = true; //
+
+	if ((int)poz0.x - 1 < 0 || (int)poz0.y - 1 < 0 || poz0 == last || hop == LG)
+	{
+		poz0_2 = false;
+	}
+	if ((int)poz1.x - 1 < 0 || (int)poz1.y + 1 > 7 || poz1 == last || hop == LD)
+	{
+		poz1_2 = false;
+	}
+	if ((int)poz2.x + 1 > 7 || (int)poz2.y - 1 < 0 || poz2 == last || hop == RG)
+	{
+		poz2_2 = false;
+	}
+	if ((int)poz3.x + 1 > 7 || (int)poz3.y + 1 > 7 || poz3 == last || hop == RD)
+	{
+		poz3_2 = false;
 	}
 
 
-	return path;
+
+	sf::Vector2i poz0_offset = sf::Vector2i(-1, -1);
+	sf::Vector2i poz1_offset = sf::Vector2i(-1, 1);
+	sf::Vector2i poz2_offset = sf::Vector2i(1, -1);
+	sf::Vector2i poz3_offset = sf::Vector2i(1, 1);
+
+
+
+	bool czy_wsz_zaj0 = false;
+	bool czy_wsz_zaj1 = false;
+	bool czy_wsz_zaj2 = false;
+	bool czy_wsz_zaj3 = false;
+
+	if (poz0 != last && Pion::get_pole(poz0)->zajete == false && hop == BRAK)
+	{
+
+		ending_path.push_back(poz0);
+
+		
+	}
+	else if (poz0 != last && poz0_2 == true && Pion::get_pole(poz0)->zajete == true && Pion::get_pole(poz0, poz0_offset)->zajete == false)
+	{
+		if (ending_path.end() == find(ending_path.begin(), ending_path.end(), Pion::get_wsp(poz0, poz0_offset))/* || ending_path.size() == 0*/)
+		{
+			ending_path.push_back(Pion::get_wsp(poz0, poz0_offset));
+			tmp_path_iter++;
+		}
+		else
+		{
+			return false;
+		}
+
+		if (find_path_to(Pion::get_wsp(poz0, poz0_offset), to, last, RD) == false)
+		{
+			for (int i = tmp_path.size() - 1; i >= tmp_path_iter; i--)
+			{
+				ending_path.erase(ending_path.begin() + i);
+			}
+			tmp_path_iter--;
+		}
+		
+	}
+	else
+	{
+		czy_wsz_zaj0 = true;
+	}
+	//TODO
 }
+
+//void Gracz_AI::find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, vector<sf::Vector2u>& path)
+//{
+//	 vector<sf::Vector2u> path;
+//
+//	sf::Vector2u now = from;
+//	sf::Vector2u last = now;
+//
+//	while (now!=to)
+//	{
+//		if (now.x-1 <= to.x) {
+//			if (Plansza::czy_pole_zajete(Pion::get_wsp(now,sf::Vector2i(1,-1))) == false && Pion::get_wsp(now, sf::Vector2i(1, -1)) != last)
+//			{
+//				last = now;
+//				now = Pion::get_wsp(now, sf::Vector2i(1, -1));
+//				path.push_back(now);
+//			}
+//			else if(Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(1, 1)) != last)
+//			{
+//				last = now;
+//				now = Pion::get_wsp(now, sf::Vector2i(1, 1));
+//				path.push_back(now);
+//			}
+//			else
+//			{
+//				break;
+//			}
+//		}
+//		else
+//		{
+//			if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, -1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, -1)) != last)
+//			{
+//				last = now;
+//				now = Pion::get_wsp(now, sf::Vector2i(-1, -1));
+//				path.push_back(now);
+//			}
+//			else if (Plansza::czy_pole_zajete(Pion::get_wsp(now, sf::Vector2i(-1, 1))) == false && Pion::get_wsp(now, sf::Vector2i(-1, 1)) != last)
+//			{
+//				last = now;
+//				now = Pion::get_wsp(now, sf::Vector2i(-1, 1));
+//				path.push_back(now);
+//			}
+//			else
+//			{
+//				break;
+//			}
+//		}
+//	}
+//
+//
+//	return path;
 
 sf::Vector2u Gracz_AI::find_best_pole_dla_piona(Pion* pionek) {
 

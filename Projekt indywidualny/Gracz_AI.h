@@ -46,7 +46,7 @@ public:
 	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
 	void tic(sf::Event& _event, sf::RenderWindow& window);
 	bool find_ending_path(Pion*);
-	vector<sf::Vector2u> find_path_to(sf::Vector2u from, sf::Vector2u to);
+	bool find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, Kierunek hop);
 
 
 };
