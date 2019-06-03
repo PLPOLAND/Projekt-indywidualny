@@ -22,8 +22,8 @@ class Gracz_AI : public Gracz
 	public:
 		Ruch(string t);
 
-		unsigned char id_p;
-		sf::Vector2u wsp;
+		sf::Vector2u from;
+		sf::Vector2u to;
 	};
 
 	vector<Gracz_AI::Ruch*> ruchy;
@@ -43,10 +43,18 @@ public:
 	~Gracz_AI();
 
 	void ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window);
+
 	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
+
+	bool czy_poprawne_wsp(int x, int y);
+	bool czy_bylo(vector<sf::Vector2u>& path, sf::Vector2u t);
+	bool preffer_right_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0, 0));
+	bool preffer_left_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0,0));
+	bool path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0, 0));
+
 	void tic(sf::Event& _event, sf::RenderWindow& window);
 	bool find_ending_path(Pion*);
-	bool find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, Kierunek hop);
+	//bool find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, Kierunek hop);
 
 
 };

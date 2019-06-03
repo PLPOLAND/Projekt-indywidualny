@@ -11,7 +11,7 @@ public:
 	Pole_szachowe();
 	~Pole_szachowe();
 
-	static const sf::Color kolor_cz;
+	static const sf::Color kolor_c;
 	static const sf::Color kolor_b;
 	static const sf::Color kolor_trigg;
 	static const sf::Color kolor_path;

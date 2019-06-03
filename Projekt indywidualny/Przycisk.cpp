@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Przycisk::Przycisk(sf::Vector2f rozm, sf::Vector2f wspo, int rozm_tex, string text_): sf::RectangleShape(), text(), isActive(false)
+Przycisk::Przycisk(sf::Vector2f rozm, sf::Vector2f wspo, int rozm_tex, string text_, bool endi): sf::RectangleShape(), text(), isActive(false), end(endi)
 {
 
 	this->setSize(rozm);
@@ -16,14 +16,14 @@ Przycisk::Przycisk(sf::Vector2f rozm, sf::Vector2f wspo, int rozm_tex, string te
 
 	
 	
-	cout << this->getSize().y << endl
-		<< text.getGlobalBounds().height << endl
+	//cout << this->getSize().y << endl
+		/*<< text.getGlobalBounds().height << endl
 		<< this->getGlobalBounds().top + (this->getSize().y - text.getGlobalBounds().height) / 2 << endl
 		<< text.getGlobalBounds().top << endl
 		<<endl
 		<< text.getLocalBounds().width + text.getLocalBounds().left << endl
 		<< text.getLocalBounds().width << endl
-		<< text.getLocalBounds().left << endl;
+		<< text.getLocalBounds().left << endl;*/
 
 	float tmp_x = this->getPosition().x + (this->getSize().x / 2) - ((text.getLocalBounds().width + text.getLocalBounds().left) / 2);
 	float tmp_y = this->getPosition().y + (this->getSize().y / 2) - ((text.getLocalBounds().height + text.getLocalBounds().top) / 2);

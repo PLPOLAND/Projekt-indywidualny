@@ -15,9 +15,9 @@ Menu_List::~Menu_List()
 
 }
 
-void Menu_List::dodajPrzycisk(string t)
+void Menu_List::dodajPrzycisk(string t, bool czy_end)
 {
-	this->push_back(new Przycisk(sf::Vector2f(width, height), sf::Vector2f(left, top), text_size, t));
+	this->push_back(new Przycisk(sf::Vector2f(width, height), sf::Vector2f(left, top), text_size, t, czy_end));
 	top += height + 1;
 }
 
@@ -91,8 +91,17 @@ void Menu_List::tic(sf::Event & _event, sf::RenderWindow & window)
 		
 		if (this->at(active)->funkcja != nullptr)
 		{
-			this->activate = false;
-			this->at(active)->run();
+			if (this->at(active)->end == true)
+			{
+				this->activate = false;
+				this->at(active)->run();
+			}
+			else
+			{
+				window.setVisible(false);
+				this->at(active)->run();
+				window.setVisible(true);
+			}
 		}
 		while (_event.type != sf::Event::KeyReleased)
 		{

@@ -3,18 +3,19 @@
 #include <vector>
 #include "Pole_szachowe.h"
 
-enum Kierunek
-{
-	BRAK,
-	LG,
-	RG,
-	LD,
-	RD
-};
+
 
 class Pion : public element
 {
 public:
+	enum Kierunek
+	{
+		BRAK,
+		LG,
+		RG,
+		LD,
+		RD
+	};
 
 	Pion();
 	~Pion();

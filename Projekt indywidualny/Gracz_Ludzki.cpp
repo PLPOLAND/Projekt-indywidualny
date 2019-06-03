@@ -54,7 +54,7 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))//Wybranie
 		{
-			cout << "Enter" << endl;
+			//cout << "Enter" << endl;
 			if (Plansza::czy_pionek_nalezy(last_trigg, this) == true) {
 				wsp_piona = last_trigg;
 				faza = RUCH_PIONA;
@@ -70,8 +70,7 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 			}
 			else
 			{
-				//TODO
-				cout << "Nie twoj pion!";
+				cout << "Nie twoj pion!" << endl;
 			}
 			while (_event.type != sf::Event::KeyReleased)
 			{
@@ -119,7 +118,7 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 		{
-			cout << "Enter" << endl;
+			//cout << "Enter" << endl;
 
 			auto pion = Plansza::get_pion(wsp_piona);
 			if (Plansza::czy_pole_zajete(last_trigg) == false && pion->pola_ruchu.end() != find(pion->pola_ruchu.begin(),pion->pola_ruchu.end(),last_trigg) ) {
@@ -142,8 +141,7 @@ void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
 			}
 			else
 			{
-				//TODO
-				cout << "Zajete!/ niedozwolone";
+				cout << "Zajete!/ niedozwolone" << endl;
 			}
 			while (_event.type != sf::Event::KeyReleased)
 			{

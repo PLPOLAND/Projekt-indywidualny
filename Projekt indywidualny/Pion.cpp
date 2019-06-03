@@ -16,7 +16,7 @@ Pion::Pion() : ID(ID_P++), is_win_pos(false) {
 	if (ID < 8)
 	{
 		wlasciciel = 0;
-		texture->loadFromFile("pion_czarny.png");
+		texture->loadFromFile("Zasoby/pion_czarny.png");
 		this->setTexture(*texture);
 		if (ID < 4)
 		{
@@ -33,7 +33,7 @@ Pion::Pion() : ID(ID_P++), is_win_pos(false) {
 	{
 		wlasciciel = 1;
 
-		texture->loadFromFile("pion.png");
+		texture->loadFromFile("Zasoby/pion.png");
 		this->setTexture(*texture);
 
 		if (ID < 12)
@@ -59,7 +59,7 @@ void Pion::move(sf::Vector2u & wspolrzedne)
 	pozycja_na_planszy.x = wspolrzedne.x;
 	pozycja_na_planszy.y = wspolrzedne.y;
 	
-	//cout << "Pion::Move " << (int)pozycja_na_planszy[0] << (int)pozycja_na_planszy[1] << endl;
+	////cout << "Pion::Move " << (int)pozycja_na_planszy[0] << (int)pozycja_na_planszy[1] << endl;
 }
 
 void Pion::update()
@@ -304,7 +304,7 @@ Pole_szachowe* Pion::get_pole(sf::Vector2u wsp, sf::Vector2i offset) {
 	}
 	else
 	{
-		cout << "Blad";
+		//cout << "Blad";
 		return &Plansza::pole[0][0];
 	}
 }

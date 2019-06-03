@@ -10,7 +10,7 @@ element::element():texture(new sf::Texture())
 element::element(string t):texture(new sf::Texture())
 {
 	if (!texture->loadFromFile(t)) {
-		exit(0);
+		//exit(0);
 	}
 	this->setTexture(*texture);
 }

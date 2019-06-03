@@ -6,13 +6,14 @@
 #include "Gracz_AI.h"
 
 void graj() {
-	cout << "Graj" << endl;
+	//cout << "Graj" << endl;
 }
 void info() {
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Skoczek");
-	Menu_List menu(200, 40, 20, 0, 0);
-	menu.dodajPrzycisk("Wyjdz");
-	//menu.getPrzycisk(0)->setFunction();
+	sf::Texture tx;
+	tx.loadFromFile("Zasoby/info.png");
+	element el;
+	el.setTexture(tx);
 	window.setFramerateLimit(60);
 	while (window.isOpen())
 	{
@@ -21,26 +22,55 @@ void info() {
 
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (event.type == sf::Event::KeyPressed) {
+				window.close();
+			}
 		}
 		window.clear();
-		menu.draw(window);
+		window.draw(el);
 		window.display();
 	}
 	
 }
 
+void okno_powitalne() {
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "Skoczek");
+	sf::Texture tx;
+	tx.loadFromFile("Zasoby/powitac.png");
+	element el;
+	el.setTexture(tx);
+	window.setFramerateLimit(60);
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event)) {
+
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (event.type == sf::Event::KeyPressed) {
+				window.close();
+			}
+		}
+		window.clear();
+		window.draw(el);
+		window.display();
+	}
+
+}
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1000, 800), "Skoczek");
-	window.setFramerateLimit(60);
+	okno_powitalne();
 
+	sf::RenderWindow window(sf::VideoMode(1050, 800), "Skoczek");
+	window.setFramerateLimit(60);
 	
 	Plansza plansza;
 	Gracz_AI gracz1;
 	Gracz_Ludzki gracz2;
 	
-	Menu_List menu(200,40,20,0,800);
-	menu.dodajPrzycisk("Graj");
+	Menu_List menu(250,40,20,0,800);
+	menu.dodajPrzycisk("Graj", true);
 	menu.getPrzycisk(0)->setFunction(graj);
 	menu.dodajPrzycisk("Info");
 	menu.getPrzycisk(1)->setFunction(info);
@@ -56,6 +86,7 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+
 		if (menu.activate == true) {
 			menu.tic(event,window);
 		}
@@ -69,7 +100,6 @@ int main()
 				{
 					gracz2.czy_ruch = true;
 				}
-				gracz2.tic(event, window);
 			}
 			else
 			{
@@ -83,7 +113,7 @@ int main()
 			if (wygrany == 0)
 			{
 				menu.activate = true;
-				menu.dodajPrzycisk("Wgral Gracz Czarny");
+				menu.dodajPrzycisk("Wygral Gracz Czarny");
 			}
 			else if (wygrany == 1)
 			{

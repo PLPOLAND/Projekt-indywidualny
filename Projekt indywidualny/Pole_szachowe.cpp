@@ -1,7 +1,7 @@
 #include "Pole_szachowe.h"
 
-const sf::Color Pole_szachowe::kolor_cz(255, 220, 185);
-const sf::Color Pole_szachowe::kolor_b(233, 107, 57);
+const sf::Color Pole_szachowe::kolor_c(233, 107, 57);
+const sf::Color Pole_szachowe::kolor_b(255, 220, 185);
 const sf::Color Pole_szachowe::kolor_trigg(255, 40, 40);
 const sf::Color Pole_szachowe::kolor_path(2, 165, 0);
 
@@ -29,7 +29,7 @@ void Pole_szachowe::set_kolor(Kolor_Pola k)
 
 	if (kolor == CZARNY)
 	{
-		this->setFillColor(kolor_cz);
+		this->setFillColor(kolor_c);
 	}
 	else
 	{
@@ -70,10 +70,10 @@ void Pole_szachowe::koloruj()
 {
 	if (flagi.false_all())
 	{
-		//std::cout << "kolor_bazowy";
+		//std:://cout << "kolor_bazowy";
 		if (kolor == CZARNY)
 		{
-			this->setFillColor(kolor_cz);
+			this->setFillColor(kolor_c);
 		}
 		else
 		{
@@ -82,11 +82,11 @@ void Pole_szachowe::koloruj()
 	}
 	else if (flagi.trig == true)
 	{
-		//std::cout << "kolor_trigg";
+		//std:://cout << "kolor_trigg";
 		this->setFillColor(kolor_trigg);
 	}
 	else if (flagi.path == true) {
-		//std::cout << "kolor_path";
+		//std:://cout << "kolor_path";
 		this->setFillColor(kolor_path);
 	}
 }

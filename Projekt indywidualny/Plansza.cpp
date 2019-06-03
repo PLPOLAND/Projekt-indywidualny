@@ -21,11 +21,11 @@ Plansza::Plansza()
 
 			if ((i+j)%2==0)//Jesli suma indexów jest parzysta to ustaw kolor pola na bia³y
 			{
-				pole[j][i].set_kolor(Pole_szachowe::BIALY);
+				pole[j][i].set_kolor(Pole_szachowe::CZARNY);
 			}
 			else
 			{
-				pole[j][i].set_kolor(Pole_szachowe::CZARNY);
+				pole[j][i].set_kolor(Pole_szachowe::BIALY);
 			}
 			
 			width += SZEROKOSC;
@@ -37,7 +37,7 @@ Plansza::Plansza()
 	{
 		Pionki.push_back(new Pion());
 	}
-	cout << "piony" << endl;
+	//cout << "piony" << endl;
 	for_each(Pionki.begin(), Pionki.end(), [&](Pion* t) { 
 		t->setPosition(pole[t->pozycja_na_planszy.x][t->pozycja_na_planszy.y].PozycjaIkony);
 		t->set_size(100, 100); 
@@ -100,7 +100,7 @@ void Plansza::move_P(Gracz * gracz, unsigned char ID, sf::Vector2u wsp)
 		}
 		else
 		{
-			cout << "Pole "<< wsp.x<<" "<< wsp.y  << " jest zajete"<< endl;
+			//cout << "Pole "<< wsp.x<<" "<< wsp.y  << " jest zajete"<< endl;
 			//TODO
 		}
 	}
@@ -258,12 +258,33 @@ void Plansza::print()
 
 	for (int i = 0; i < 8; i++)
 	{
-		cout << i << " ";
+		//cout << i << " ";
 		for (int j = 0; j < 8; j++)
 		{
-			cout << pole[i][j].zajete << " ";
+			//cout << pole[j][i].zajete << " ";
 		}
-		cout << endl;
+		//cout << endl;
 	}
 
+}
+
+void Plansza::uzupelnij_zajetosc_planszy(int tab[8][8])
+{
+	for (int i = 0; i < 8; i++)
+	{
+		
+		for (int j = 0; j < 8; j++)
+		{
+			
+			if (pole[j][i].zajete == true)
+			{
+				tab[j][i] = 1;
+			}
+			else
+			{
+				tab[i][j] = 0;
+			}
+		}
+		
+	}
 }

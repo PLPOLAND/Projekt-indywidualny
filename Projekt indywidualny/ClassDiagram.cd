@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="element">
-    <Position X="0.5" Y="0.75" Width="1.5" />
+    <Position X="1.75" Y="0.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAIAAIAAAAAAAAAAAAAAAAIAAAAAgEAAAAAAAAAAAA=</HashCode>
       <FileName>element.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz">
-    <Position X="10.5" Y="0.75" Width="1.5" />
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
     <NestedTypes>
       <Enum Name="Gracz::KOLOR" Collapsed="true">
         <TypeIdentifier>
@@ -21,10 +24,35 @@
       <FileName>Gracz.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Gracz_Ludzki">
-    <Position X="10.5" Y="3.75" Width="1.5" />
+  <Class Name="Gracz_AI">
+    <Position X="7" Y="4" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
     <NestedTypes>
-      <Enum Name="Gracz_Ludzki::Faza_ruchu" Collapsed="true">
+      <Enum Name="Gracz_AI::faza_ruchu">
+        <TypeIdentifier>
+          <NewMemberFileName>Gracz_AI.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="Gracz_AI::Ruch">
+        <TypeIdentifier>
+          <NewMemberFileName>Gracz_AI.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAECACEgAAAAIACAAAACQAAQQAgAkAAAABAAgIAAAAA=</HashCode>
+      <FileName>Gracz_AI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gracz_Ludzki">
+    <Position X="9.25" Y="4" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Gracz_Ludzki::Faza_ruchu">
         <TypeIdentifier>
           <NewMemberFileName>Gracz_Ludzki.h</NewMemberFileName>
         </TypeIdentifier>
@@ -35,29 +63,32 @@
       <FileName>Gracz_Ludzki.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Pion">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+  <Class Name="Menu_List">
+    <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAEAIQABgADISACAAAAAAAAAAABAAAAAAAAEAIA=</HashCode>
-      <FileName>Pion.h</FileName>
+      <HashCode>gEAAAAAAAAMgIAQAQAIAQAgAAAAIAAAAQAACIAAAAQA=</HashCode>
+      <FileName>Menu_List.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Plansza">
-    <Position X="3.25" Y="0.75" Width="1.5" />
+    <Position X="11.25" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>EAQAAAAQAGAAAABAAAICAAgAAABgAgAAJQQAAQAAAAA=</HashCode>
+      <HashCode>EAQAAAAQAGAAAABAAAICAAgAAABgAgAAJQQAAQABAAA=</HashCode>
       <FileName>Plansza.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pole_szachowe">
-    <Position X="6" Y="0.75" Width="1.5" />
+    <Position X="13.75" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
     <NestedTypes>
-      <Enum Name="Pole_szachowe::Kolor_Pola" Collapsed="true">
+      <Enum Name="Pole_szachowe::Kolor_Pola">
         <TypeIdentifier>
           <NewMemberFileName>Pole_szachowe.h</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
-      <Struct Name="Pole_szachowe::Flags" Collapsed="true">
+      <Struct Name="Pole_szachowe::Flags">
         <TypeIdentifier>
           <NewMemberFileName>Pole_szachowe.h</NewMemberFileName>
         </TypeIdentifier>
@@ -66,6 +97,36 @@
     <TypeIdentifier>
       <HashCode>AEgAAAAcCCAgAAAAACEAAAAAAAAAIAAAmgQAAAAEAAI=</HashCode>
       <FileName>Pole_szachowe.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Przycisk">
+    <Position X="4.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAIAAgACAAAAAAAAAAIAABAAAAAAAAAoAAEAAACAAAI=</HashCode>
+      <FileName>Przycisk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pion">
+    <Position X="1.75" Y="3.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Pion::Kierunek">
+        <TypeIdentifier>
+          <NewMemberFileName>Pion.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <InheritanceLine Type="element" FixedToPoint="true">
+      <Path>
+        <Point X="2.875" Y="3.011" />
+        <Point X="2.875" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAEAIQABgADISACAAAAAAAAAAABAAAAAAAAEAIA=</HashCode>
+      <FileName>Pion.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

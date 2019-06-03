@@ -56,5 +56,7 @@ public:
 
 
 	static void print();
+
+	static void uzupelnij_zajetosc_planszy(int tab[8][8]);
 };
 

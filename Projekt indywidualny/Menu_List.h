@@ -25,7 +25,7 @@ public:
 	Menu_List(float width, float height, int text_size, float top, float left);
 	~Menu_List();
 
-	void dodajPrzycisk(string t);
+	void dodajPrzycisk(string t, bool czy_end = false);
 	Przycisk* getPrzycisk(int i);
 	void draw(sf::RenderWindow& window);
 	void setActive(int i);

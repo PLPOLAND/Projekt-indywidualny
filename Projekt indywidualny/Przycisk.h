@@ -13,11 +13,12 @@ private:
 	sf::Font font;//czcionka
 
 	bool isActive; // czy przycisk jest Aktywny
+	bool end; //czy wy³¹czyæ menu po aktywacji tego przycisku
 
 	void(*funkcja)(); // wskaŸnik na funkcje wywo³ywan¹ przez przycisk
 
 public:
-	Przycisk(sf::Vector2f rozm, sf::Vector2f wspo = sf::Vector2f(0,0), int rozm_tex = 12, string text ="");
+	Przycisk(sf::Vector2f rozm, sf::Vector2f wspo = sf::Vector2f(0,0), int rozm_tex = 12, string text ="", bool endi = false);
 	~Przycisk();
 	///ustaw jako aktywny
 	void setActive();
