@@ -276,13 +276,13 @@ void Plansza::uzupelnij_zajetosc_planszy(int tab[8][8])
 		for (int j = 0; j < 8; j++)
 		{
 			
-			if (pole[j][i].zajete == true)
+			if (pole[i][j].zajete == true)
 			{
 				tab[j][i] = 1;
 			}
 			else
 			{
-				tab[i][j] = 0;
+				tab[j][i] = 0;
 			}
 		}
 		

@@ -68,6 +68,9 @@ int main()
 	Plansza plansza;
 	Gracz_AI gracz1;
 	Gracz_Ludzki gracz2;
+
+	gracz1.czy_ruch = false;
+	gracz2.czy_ruch = true;
 	
 	Menu_List menu(250,40,20,0,800);
 	menu.dodajPrzycisk("Graj", true);
