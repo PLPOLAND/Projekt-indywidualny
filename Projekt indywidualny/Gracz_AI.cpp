@@ -160,6 +160,7 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 				{
 					if (pionki[i]->is_win_pos == false && pionki[i]->paths.size())
 					{
+						ending_pion = pionki[i];
 						ending_path = pionki[i]->paths[rand() % (pionki[i]->paths.size()+1)];
 						break;
 					}
@@ -235,9 +236,9 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 			}
 			
 		}
-		return false;
+		//return false;
 	}
-	else
+	/*else
 	{
 		if (pion->paths.size()>0)
 		{
@@ -247,8 +248,9 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 		{
 			return false;
 		}
-	}
-	return true;
+	}*/
+	//return true;
+	return false;
 	
 
 }
@@ -952,19 +954,19 @@ bool Gracz_AI::path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u fro
 		path_l = true;
 	}
 
-	cout << "Path L" << endl;
-	for (int i = 0; i < path_tmp_l.size(); i++)
-	{
-		cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
-	}
-	cout << endl;
-	cout << endl;
-	cout << "Path R" << endl;
-	for (int i = 0; i < path_tmp_r.size(); i++)
-	{
-		cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
-	}
-	cout << endl;
+	//cout << "Path L" << endl;
+	//for (int i = 0; i < path_tmp_l.size(); i++)
+	//{
+	//	cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
+	//}
+	//cout << endl;
+	//cout << endl;
+	//cout << "Path R" << endl;
+	//for (int i = 0; i < path_tmp_r.size(); i++)
+	//{
+	//	cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
+	//}
+	//cout << endl;
 
 
 	if (path_l == true && path_r == true)

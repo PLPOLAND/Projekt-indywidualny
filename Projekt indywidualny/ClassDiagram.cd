@@ -42,7 +42,7 @@
       </Struct>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAECACEgAAAAIACAAAACQAAQQAgAkAAAABAAgIAAAAA=</HashCode>
+      <HashCode>AAECACkgAAAAIACAAAACQAAQQAgAkAAAABAAgIAAAAA=</HashCode>
       <FileName>Gracz_AI.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -58,6 +58,11 @@
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
+    <InheritanceLine Type="Gracz">
+      <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.276" Y="0.06" Height="0.182" Width="0.636" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAIAAAAAAAAAAAQEBAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Gracz_Ludzki.h</FileName>
@@ -95,7 +100,7 @@
       </Struct>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AEgAAAAcCCAgAAAAACEAAAAAAAAAIAAAmgQAAAAEAAI=</HashCode>
+      <HashCode>AEgAAAAMCCBgAAAAACEAAAAAAAAAIAAAmgQAAAAEAAI=</HashCode>
       <FileName>Pole_szachowe.h</FileName>
     </TypeIdentifier>
   </Class>
