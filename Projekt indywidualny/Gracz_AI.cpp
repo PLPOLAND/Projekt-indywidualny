@@ -954,19 +954,19 @@ bool Gracz_AI::path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u fro
 		path_l = true;
 	}
 
-	//cout << "Path L" << endl;
-	//for (int i = 0; i < path_tmp_l.size(); i++)
-	//{
-	//	cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
-	//}
-	//cout << endl;
-	//cout << endl;
-	//cout << "Path R" << endl;
-	//for (int i = 0; i < path_tmp_r.size(); i++)
-	//{
-	//	cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
-	//}
-	//cout << endl;
+	cout << "Path L" << endl;
+	for (int i = 0; i < path_tmp_l.size(); i++)
+	{
+		cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
+	}
+	cout << endl;
+	cout << endl;
+	cout << "Path R" << endl;
+	for (int i = 0; i < path_tmp_r.size(); i++)
+	{
+		cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
+	}
+	cout << endl;
 
 
 	if (path_l == true && path_r == true)
