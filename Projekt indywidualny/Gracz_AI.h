@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include "Menu_List.h"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ class Gracz_AI : public Gracz
 	vector<sf::Vector2u> ending_path;
 	Pion* ending_pion;
 
+
 public:
 
 
@@ -42,7 +44,7 @@ public:
 	Gracz_AI();
 	~Gracz_AI();
 
-	void ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window);
+	void ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window, Menu_List& menu);
 
 	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
 
@@ -53,9 +55,8 @@ public:
 	bool preffer_left_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0,0));
 	bool path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0, 0));
 
-	void tic(sf::Event& _event, sf::RenderWindow& window);
+	void tic(sf::Event& _event, sf::RenderWindow& window, Menu_List&);
 	bool find_ending_path(Pion*);
-	//bool find_path_to(sf::Vector2u from, sf::Vector2u to, sf::Vector2u last, Kierunek hop);
 
 
 };

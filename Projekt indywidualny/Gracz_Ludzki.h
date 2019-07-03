@@ -29,7 +29,7 @@ public:
 	virtual void ruch(unsigned char, sf::Vector2u );
 
 	///Obsluga gracza
-	virtual void tic(sf::Event&, sf::RenderWindow&);
+	virtual void tic(sf::Event&, sf::RenderWindow&, Menu_List&);
 	
 	void trigg(sf::Keyboard::Key);
 

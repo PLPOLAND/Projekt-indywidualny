@@ -1,8 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Menu_List.h"
 
 class Gracz
 {
+protected:
+	bool was_move;
 public:		
 	
 	Gracz();
@@ -15,13 +18,13 @@ public:
 	KOLOR kolor_gracza;
 	bool czy_ruch;
 	unsigned char ID;
-
+	int wynik;
 	static unsigned char ID_G;
 
 
-
-	//virtual void ruch(unsigned char id_p, sf::Vector2u wsp) = 0;
-	virtual void tic(sf::Event&, sf::RenderWindow&) = 0;
+	virtual void tic(sf::Event&, sf::RenderWindow&, Menu_List&) = 0;
+	bool wasMove();
+	void clearMove();
 
 };
 

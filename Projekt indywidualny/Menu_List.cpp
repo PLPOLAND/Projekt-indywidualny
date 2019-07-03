@@ -21,6 +21,12 @@ void Menu_List::dodajPrzycisk(string t, bool czy_end)
 	top += height + 1;
 }
 
+void Menu_List::dodajPrzycisk(string * t, bool czy_end)
+{
+	this->push_back(new Przycisk(sf::Vector2f(width, height), sf::Vector2f(left, top), text_size, *t, czy_end));
+	top += height + 1;
+}
+
 Przycisk* Menu_List::getPrzycisk(int i)
 {
 	if (i < this->size())
@@ -108,6 +114,14 @@ void Menu_List::tic(sf::Event & _event, sf::RenderWindow & window)
 			window.pollEvent(_event);
 		}
 	}
+}
+
+bool Menu_List::isEmpty()
+{
+	if (this->size() == 0)
+		return true;
+	else
+		return false;
 }
 
 void Menu_List::clear()

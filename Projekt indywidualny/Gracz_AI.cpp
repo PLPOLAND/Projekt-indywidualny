@@ -55,7 +55,7 @@ Gracz_AI::~Gracz_AI()
 {
 }
 
-void Gracz_AI::ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window)
+void Gracz_AI::ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window, Menu_List& menu)
 {
 	auto pion = Plansza::Pionki[id_p];
 	auto pred = [&](sf::Vector2u vec) {
@@ -69,15 +69,18 @@ void Gracz_AI::ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& wind
 	Plansza::trigg(pion->pozycja_na_planszy);
 	window.clear();
 	Plansza::draw(window);
+	menu.draw(window);
 	window.display();
 	Sleep(1500);
 	for_each(pion->pola_ruchu.begin(), pion->pola_ruchu.end(), predu);
 	Plansza::untrigg(pion->pozycja_na_planszy);
 
 	Plansza::move_P(this, id_p, wsp);
+	
+	this->was_move = true;
 }
 
-void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
+void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window, Menu_List& menu)
 {
 	if (faza == ZAPROGRAMOWANA)
 	{
@@ -90,7 +93,7 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 		else
 		{
 			int id_p = Plansza::get_id_piona(ruchy[ruch_number]->from);
-			this->ruch(id_p, ruchy[ruch_number]->to,window);
+			this->ruch(id_p, ruchy[ruch_number]->to,window, menu);
 			this->czy_ruch = false;
 		}
 		this->ruch_number++;
@@ -134,13 +137,14 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 		{
 			unsigned char ID = Plansza::get_id_piona(b_pionek->pozycja_na_planszy);
 
-			this->ruch(ID, best_pole, window);
+			this->ruch(ID, best_pole, window, menu);
 			this->czy_ruch = false;
 		}
 		
 	}
 	else if (faza==ZAKONCZENIE)
 	{
+		clearMove();
 		static bool czy_szukano = false;
 		if (ending_path.size() == 0 || ending_pion == nullptr) {
 			//cout << "Szukanie";
@@ -158,10 +162,10 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 			{
 				for (int i = 0; i < 8; i++)
 				{
-					if (pionki[i]->is_win_pos == false && pionki[i]->paths.size())
+					if (pionki[i]->is_win_pos == false && pionki[i]->paths.size()>0)
 					{
 						ending_pion = pionki[i];
-						ending_path = pionki[i]->paths[rand() % (pionki[i]->paths.size()+1)];
+						ending_path = pionki[i]->paths[rand() % (pionki[i]->paths.size())];
 						break;
 					}
 				}
@@ -172,7 +176,7 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window)
 		else if (Plansza::czy_pole_zajete(ending_path[0]) == false) {//jeœli nastepne pole jest wolne
 			//cout << "ruch";
 
-			this->ruch(ending_pion->ID, ending_path[0], window);
+			this->ruch(ending_pion->ID, ending_path[0], window, menu);
 			//ending_path.erase(ending_path.begin());//usuniêcie ju¿ wykonanego ruchu
 			ending_path.clear();
 			this->czy_ruch = false;
@@ -229,6 +233,7 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 			vector<sf::Vector2u> path;
 			int tab_zaj[8][8];
 			Plansza::uzupelnij_zajetosc_planszy(tab_zaj);
+			tab_zaj[pion->pozycja_na_planszy.y][pion->pozycja_na_planszy.x] = 0;
 			if (this->path(path, tab_zaj, pion->pozycja_na_planszy, pola_k[i]) == true)
 			{
 				ending_path = path;
@@ -254,6 +259,8 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 	
 
 }
+
+
 
 
 

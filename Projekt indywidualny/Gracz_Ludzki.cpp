@@ -9,9 +9,10 @@ Gracz_Ludzki::Gracz_Ludzki() : Gracz(), faza(WYB_PIONA), last_trigg(0, 0)
 void Gracz_Ludzki::ruch(unsigned char id_p, sf::Vector2u wsp)
 {
 	Plansza::move_P(this, id_p,	wsp);
+	this->was_move = true;
 }
 
-void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window)
+void Gracz_Ludzki::tic(sf::Event& _event, sf::RenderWindow& window, Menu_List&)
 {
 	if (faza==WYB_PIONA)//Wybieranie pionka
 	{

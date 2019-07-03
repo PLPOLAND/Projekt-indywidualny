@@ -230,26 +230,28 @@ int Plansza::who_win()
 		if (Pionki[i]->is_win_pos == false)
 			wygrana = false;
 	}
-	if (wygrana == true)
+	
+	bool wygrana1 = true;
+	for (int i = 8; i < 16 && wygrana1 == true; i++)
+	{
+		if (Pionki[i]->is_win_pos == false)
+			wygrana1 = false;
+	}
+	if (wygrana == true && wygrana1 == true)
+	{
+		return 2;
+	}
+	else if(wygrana == true && wygrana1 == false)
 	{
 		return 0;
 	}
+	else if (wygrana == false && wygrana1 == true)
+	{
+		return 1;
+	}
 	else
 	{
-		wygrana = true;
-		for (int i = 8; i < 16 && wygrana == true; i++)
-		{
-			if (Pionki[i]->is_win_pos == false)
-				wygrana = false;
-		}
-		if (wygrana == true)
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
+		return -1;
 	}
 }
 

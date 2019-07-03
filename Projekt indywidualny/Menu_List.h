@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include "Przycisk.h"
-
 using namespace std;
 
 class Menu_List : public std::vector<Przycisk*>
@@ -26,12 +25,13 @@ public:
 	~Menu_List();
 
 	void dodajPrzycisk(string t, bool czy_end = false);
+	void dodajPrzycisk(string* t, bool czy_end = false);
 	Przycisk* getPrzycisk(int i);
 	void draw(sf::RenderWindow& window);
 	void setActive(int i);
 	void unsetActive(int i);
 	void tic(sf::Event& _event, sf::RenderWindow& window);
-
+	bool isEmpty();
 	void clear();
 };
 

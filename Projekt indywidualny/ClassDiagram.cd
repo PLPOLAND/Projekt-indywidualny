@@ -8,24 +8,24 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz">
-    <Position X="8.25" Y="0.5" Width="1.5" />
+    <Position X="10" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Enum Name="Gracz::KOLOR" Collapsed="true">
+      <Enum Name="Gracz::KOLOR">
         <TypeIdentifier>
           <NewMemberFileName>Gracz.h</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAABAAAAIAAAoAAAACAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <HashCode>AAIBAAAAIAAAoAIAACAAAAAAAAAAAIAAAAAEQAAAAAA=</HashCode>
       <FileName>Gracz.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz_AI">
-    <Position X="7" Y="4" Width="2" />
+    <Position X="8.75" Y="5" Width="2" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -47,7 +47,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz_Ludzki">
-    <Position X="9.25" Y="4" Width="1.75" />
+    <Position X="11" Y="5" Width="1.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -60,7 +60,7 @@
     </NestedTypes>
     <InheritanceLine Type="Gracz">
       <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="-0.276" Y="0.06" Height="0.182" Width="0.636" />
+        <Position X="-0.717" Y="0.06" Height="0.182" Width="0.636" />
       </InheritanceModifierLabel>
     </InheritanceLine>
     <TypeIdentifier>
@@ -69,14 +69,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Menu_List">
-    <Position X="4.5" Y="0.5" Width="1.5" />
+    <Position X="4.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gEAAAAAAAAMgIAQAQAIAQAgAAAAIAAAAQAACIAAAAQA=</HashCode>
+      <HashCode>gEAAAAAAAAMgIAQAQAIAQAgAAAAIAAAAQAACIAAAQQA=</HashCode>
       <FileName>Menu_List.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Plansza">
-    <Position X="11.25" Y="0.5" Width="2.25" />
+    <Position X="6.25" Y="0.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>EAQAAAAQAGAAAABAAAICAAgAAABgAgAAJQQAAQABAAA=</HashCode>
       <FileName>Plansza.h</FileName>
@@ -105,7 +105,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Przycisk">
-    <Position X="4.5" Y="5.5" Width="1.5" />
+    <Position X="4.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>wAIAAgACAAAAAAAAAAIAABAAAAAAAAAoAAEAAACAAAI=</HashCode>
       <FileName>Przycisk.h</FileName>

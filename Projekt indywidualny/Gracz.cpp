@@ -1,7 +1,7 @@
 #pragma once
 #include"Gracz.h"
 
-Gracz::Gracz(/*Plansza & pl*/) : kolor_gracza()/*, plansza(pl)*/, czy_ruch(false), ID(ID_G++) {
+Gracz::Gracz() : kolor_gracza(), czy_ruch(false), wynik(0), ID(ID_G++) {
 	if (ID % 2 == 0)
 	{
 		kolor_gracza = CZARNY;
@@ -11,3 +11,13 @@ Gracz::Gracz(/*Plansza & pl*/) : kolor_gracza()/*, plansza(pl)*/, czy_ruch(false
 }
 
 unsigned char Gracz::ID_G=0;
+
+bool Gracz::wasMove()
+{
+	return this->was_move;
+}
+
+void Gracz::clearMove()
+{
+	was_move = false;
+}

@@ -93,12 +93,12 @@ int main()
 		if (menu.activate == true) {
 			menu.tic(event,window);
 		}
-		else
+		else if(plansza.who_win() == -1)
 		{
 			menu.clear();
 			if (gracz2.czy_ruch == false)
 			{
-				gracz1.tic(event, window);
+				gracz1.tic(event, window, menu);
 				if (gracz1.czy_ruch == false)
 				{
 					gracz2.czy_ruch = true;
@@ -106,22 +106,51 @@ int main()
 			}
 			else
 			{
-				gracz2.tic(event, window);
+				gracz2.tic(event, window, menu);
 				if (gracz1.czy_ruch == false)
 				{
 					gracz1.czy_ruch = true;
 				}
 			}
+			
+		}
+		else
+		{
 			int wygrany = plansza.who_win();
-			if (wygrany == 0)
+			if (wygrany == 0 && menu.isEmpty())
 			{
-				menu.activate = true;
+				menu.activate = false;
 				menu.dodajPrzycisk("Wygral Gracz Czarny");
 			}
-			else if (wygrany == 1)
+			else if (wygrany == 1 && menu.isEmpty())
 			{
-				menu.activate = true;
+				menu.activate = false;
 				menu.dodajPrzycisk("Wygral Gracz Bialy");
+			}
+			else if (wygrany == 2 && menu.size()==1) {
+				menu.activate = false;
+				menu.dodajPrzycisk("Wynik:");
+				string t = to_string(gracz2.wynik);
+				menu.dodajPrzycisk(t);
+			}
+
+			if (wygrany == 0)
+			{
+				gracz2.clearMove();
+				gracz2.tic(event, window, menu); 
+				if (gracz2.wasMove() == true)
+				{
+					gracz2.wynik -= 1;
+				}
+			}
+			else if(wygrany == 1)
+			{
+				gracz1.clearMove();
+				gracz1.tic(event, window, menu);
+				if (gracz1.wasMove() == true)
+				{
+					gracz2.wynik += 1;
+				}
 			}
 		}
 		window.clear();

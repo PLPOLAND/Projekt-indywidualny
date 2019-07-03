@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="element" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAIAAAAAAAAAAAAAAAAIAAAAAgEAAAAAAAAAAAA=</HashCode>
+      <FileName>element.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gracz" Collapsed="true">
+    <Position X="1.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAIAAAoAIAACAAAAAAAAAAAIAAAAAEQAAAAAA=</HashCode>
+      <FileName>Gracz.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gracz_AI" Collapsed="true">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECACkgAAAAIACAAAACQAAQQAgAkAAAABAAgIAAAAA=</HashCode>
+      <FileName>Gracz_AI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Gracz_Ludzki" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAIAAAAAAAAAAAQEBAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Gracz_Ludzki.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Menu_List" Collapsed="true">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAAAAAAAAMgIAQAQAIAQAgAAAAIAAAAQAACIAAAQQA=</HashCode>
+      <FileName>Menu_List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pion" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAEAIQABgADISACAAAAAAAAAAABAAAAAAAAEAIA=</HashCode>
+      <FileName>Pion.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Plansza" Collapsed="true">
+    <Position X="4.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAQAGAAAABAAAICAAgAAABgAgAAJQQAAQABAAA=</HashCode>
+      <FileName>Plansza.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pole_szachowe" Collapsed="true">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgAAAAMCCBgAAAAACEAAAAAAAAAIAAAmgQAAAAEAAI=</HashCode>
+      <FileName>Pole_szachowe.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Przycisk" Collapsed="true">
+    <Position X="2.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAIAAgACAAAAAAAAAAIAABAAAAAAAAAoAAEAAACAAAI=</HashCode>
+      <FileName>Przycisk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
