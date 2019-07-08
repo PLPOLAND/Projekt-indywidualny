@@ -161,6 +161,9 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="Zasoby\AI\0.moves" />
+    <None Include="Zasoby\AI\1.moves" />
+    <None Include="Zasoby\AI\2.moves" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,8 +6,8 @@
 #include "Windows.h"
 Gracz_AI::Gracz_AI():Gracz(), faza(ZAPROGRAMOWANA), ruchy(), ruch_number(0), ending_path(), ending_pion(nullptr)
 {
-	//cout << "Gracz" << endl;
-	srand(time(NULL));
+	
+	srand(time(NULL));//ustawienie ziarna
 	int num = 0; //numerek wariantu ruchów pocz¹tkowych
 	const int ile_plikow = 3;//ilosc plików w folderze
 
@@ -18,7 +18,7 @@ Gracz_AI::Gracz_AI():Gracz(), faza(ZAPROGRAMOWANA), ruchy(), ruch_number(0), end
 
 	ifstream plik;
 	
-	while (true)
+	while (true)//dopóki siê nie powiedzie
 	{
 		try
 		{
@@ -26,25 +26,26 @@ Gracz_AI::Gracz_AI():Gracz(), faza(ZAPROGRAMOWANA), ruchy(), ruch_number(0), end
 			while (!plik.eof())
 			{
 				string tmp;
-				getline(plik, tmp);
-				/*//cout << path << endl;
-				//cout << tmp << endl;*/
-				Gracz_AI::Ruch* tmp1 = new Gracz_AI::Ruch(tmp);
-				ruchy.push_back(tmp1);
+				getline(plik, tmp);//pobierz linie tekstu
+				Gracz_AI::Ruch* tmp1 = new Gracz_AI::Ruch(tmp);//stwórz nowe dane o ruchu
+				ruchy.push_back(tmp1);//zapisz dane
 			}
-			break;
+			break;//wczytano wszystkie zapisane ruchy
 		}
 		catch (const std::exception& e)
 		{
-			cout << e.what();
-			break;
+			cout << e.what() << " Losowanie nowego pliku..." <<endl;
+			ruchy.clear();
 			num = rand() % ile_plikow;//ponowne losowanie
+			path = "Zasoby/AI/"; 
+			path += ('0' + num);//okreœlenie
+			path += ".moves";
 		}
 	}
 	plik.close();
 
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)//zapisanie wskaŸników do pionków gracza
 	{
 		pionki[i] = Plansza::Pionki[i];
 	}
@@ -58,10 +59,10 @@ Gracz_AI::~Gracz_AI()
 void Gracz_AI::ruch(unsigned char id_p, sf::Vector2u wsp, sf::RenderWindow& window, Menu_List& menu)
 {
 	auto pion = Plansza::Pionki[id_p];
-	auto pred = [&](sf::Vector2u vec) {
+	auto pred = [&](sf::Vector2u vec) {//pokoloruj pola
 		Plansza::path(vec);
 	};
-	auto predu = [&](sf::Vector2u vec) {
+	auto predu = [&](sf::Vector2u vec) {//odkoloruj pola
 		Plansza::unpath(vec);
 	};
 
@@ -84,22 +85,21 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window, Menu_List& menu)
 {
 	if (faza == ZAPROGRAMOWANA)
 	{
-		
 		sf::Vector2u tmp_wsp = ruchy[ruch_number]->to;
 		if (Plansza::czy_pole_zajete(tmp_wsp))
 		{
-			faza = GRA;
+			faza = GRA; //Zmieñ faze gry
 		}
 		else
 		{
-			int id_p = Plansza::get_id_piona(ruchy[ruch_number]->from);
-			this->ruch(id_p, ruchy[ruch_number]->to,window, menu);
-			this->czy_ruch = false;
+			int id_p = Plansza::get_id_piona(ruchy[ruch_number]->from); //znajdŸ pionek dla którego wykonywany jest ruch
+			this->ruch(id_p, ruchy[ruch_number]->to,window, menu); // wykonaj ruch
+			this->czy_ruch = false; //zapisz info o wykonaniu ruchu
 		}
 		this->ruch_number++;
-		if (ruch_number >= ruchy.size())
+		if (ruch_number >= ruchy.size()) //czy wykonano wszystkie zapisane ruchy?
 		{
-			faza = GRA;
+			faza = GRA; //Zmieñ faze gry
 		}
 	}
 	else if (faza == GRA)
@@ -131,7 +131,6 @@ void Gracz_AI::tic(sf::Event& _event, sf::RenderWindow& window, Menu_List& menu)
 		if (best_pole == sf::Vector2u(0,0))
 		{
 			faza = ZAKONCZENIE;
-			//this->czy_ruch = false;
 		}
 		else
 		{
@@ -241,29 +240,9 @@ bool Gracz_AI::find_ending_path(Pion * pion)
 			}
 			
 		}
-		//return false;
 	}
-	/*else
-	{
-		if (pion->paths.size()>0)
-		{
-			ending_path = pion->paths[0];
-		}
-		else
-		{
-			return false;
-		}
-	}*/
-	//return true;
 	return false;
-	
-
 }
-
-
-
-
-
 
 sf::Vector2u Gracz_AI::find_best_pole_dla_piona(Pion* pionek) {
 
@@ -284,7 +263,6 @@ sf::Vector2u Gracz_AI::find_best_pole_dla_piona(Pion* pionek) {
 	}
 	return pole_b;
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool Gracz_AI::czy_poprawne_wsp(int x, int y) {
 	if (x >= 0 && x < 8 && y >= 0 && y < 8)
@@ -304,10 +282,11 @@ bool Gracz_AI::czy_bylo(vector<sf::Vector2u>& path, sf::Vector2u t) {
 }
 
 bool Gracz_AI::find_better_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
-	vector<sf::Vector2u> path_tmp2 = path_tmp;
+	
+	vector<sf::Vector2u> path_tmp2 = path_tmp;//odwiedzone pola
 
-	vector<sf::Vector2u> path_tmp_l = path;
-	vector<sf::Vector2u> path_tmp_r = path;
+	vector<sf::Vector2u> path_tmp_l = path;//œcie¿ka lewostronna
+	vector<sf::Vector2u> path_tmp_r = path;//œcie¿ka prawostronna
 	bool path_l = false;//czy znaleziono sciezke w prawo
 	bool path_r = false;//czy znaleziono sciezke w lewo
 
@@ -319,6 +298,456 @@ bool Gracz_AI::find_better_path(int tab[8][8], vector<sf::Vector2u>& path, vecto
 	}
 
 	//cout << endl;
+	//cout << "Path L" << endl;
+	//for (int i = 0; i < path_tmp_l.size(); i++)
+	//{
+	//	cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
+	//}
+	//cout << endl;
+	//cout << endl;
+	//cout << "Path R" << endl;
+	//for (int i = 0; i < path_tmp_r.size(); i++)
+	//{
+	//	cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
+	//}
+	//cout << endl;
+
+
+	if (path_l == true && path_r == true) //jeœli oba algorytmy znalaz³y drogê
+	{
+		if (path_tmp_l.size() > path_tmp_r.size())//Jeœli rozmiar lewostronnej œcie¿ki jest wiêkszy
+		{
+			path = path_tmp_r;//zapisz znalezion¹ œcie¿kê
+		}
+		else
+		{
+			path = path_tmp_l;//zapisz znalezion¹ œcie¿kê
+		}
+		return true;//zwróæ informacjê o znalezieniu œcie¿ki
+	}
+	else if (path_l == true)//jeœli tylko lewostronny znalaz³ drogê
+	{
+		path = path_tmp_l;//zapisz znalezion¹ œcie¿kê
+		return true;//zwróæ informacjê o znalezieniu œcie¿ki
+	}
+	else if (path_r == true)//jeœli tylko prawostronny znalaz³ drogê
+	{
+		path = path_tmp_r;//zapisz znalezion¹ œcie¿kê
+		return true;//zwróæ informacjê o znalezieniu œcie¿ki
+	}
+	else
+	{
+		return false;//zwróæ informacjê o nie znalezieniu œcie¿ki
+	}
+
+}
+
+bool Gracz_AI::preffer_right_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
+	//for (int i = 0; i < path.size(); i++)
+	//{
+	//	cout << path[i].x << ";" << path[i].y << " ";
+	//}
+	//cout << endl;
+
+
+
+
+	int iterator = path.size() - 1; // ostatni dobry moment œcie¿ki
+
+	int i = from.x;
+	int j = from.y;
+
+	if (from == to)
+	{
+		return true;
+	}
+
+	if (czy_poprawne_wsp(j + 1, i + 1) && tab[j + 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j + 1))//pole  prawo dó³
+	{
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j + 1)) == true)
+		{
+			return false;
+		}
+		path_tmp.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do odwiedzanych
+		path.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from))//znajdŸ lepsz¹ œcie¿kê
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());//usuñ znalezione pola które nie prowadz¹ do celu
+		}
+	}
+	else if (czy_poprawne_wsp(j + 1, i + 1) && czy_poprawne_wsp(j + 2, i + 2) && tab[j + 1][i + 1] == 1 &&
+											tab[j + 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j + 2)) {//przeskok prawo dó³
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j + 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 2, j + 2));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i + 2, j + 2));//dodaj pole do odwiedzanych
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());//usuñ znalezione pola które nie prowadz¹ do celu
+		}
+	}
+
+	else if (czy_poprawne_wsp(j - 1, i + 1) && tab[j - 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j - 1))//pole prawo góra
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j - 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j - 1, i + 1) && czy_poprawne_wsp(j - 2, i + 2) && tab[j - 1][i + 1] == 1 && tab[j - 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j - 2)) {//przeskok prawo góra
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j - 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 2, j - 2));
+		path_tmp.push_back(sf::Vector2u(i + 2, j - 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+
+	else if (czy_poprawne_wsp(j + 1, i - 1) && tab[j + 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j + 1))//pole lewo dó³
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j + 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j + 1, i - 1) && czy_poprawne_wsp(j + 2, i - 2) && tab[j + 1][i - 1] == 1 && tab[j + 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j + 2)) //przeskok lewo dó³
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j + 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 2, j + 2));
+		path_tmp.push_back(sf::Vector2u(i - 2, j + 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+
+	else if (czy_poprawne_wsp(j - 1, i - 1) && tab[j - 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j - 1))//pole lewo góra
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j - 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+
+
+	}
+	else if (czy_poprawne_wsp(j - 1, i - 1) && czy_poprawne_wsp(j - 2, i - 2) && tab[j - 1][i - 1] == 1 && tab[j - 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j - 2)) {//przeskok lewo góra
+
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j - 2)) == true)
+		{
+			return false;
+		}
+		path.push_back(sf::Vector2u(i - 2, j - 2));
+		path_tmp.push_back(sf::Vector2u(i - 2, j - 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+
+	}
+	return false;
+}
+bool Gracz_AI::preffer_left_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
+
+	//for (int i = 0; i < path.size(); i++)
+	//{
+	//	cout << path[i].x << ";" << path[i].y << " ";
+	//}
+	//cout << endl;
+
+
+
+	int iterator = path.size() - 1; // ostatni dobry moment œcie¿ki
+
+	int i = from.x;
+	int j = from.y;
+
+	if (from == to)
+	{
+		return true;
+	}
+
+	if (czy_poprawne_wsp(j + 1, i - 1) && tab[j + 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j + 1))//pole lewo dó³
+	{
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j + 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do odwiedzanych
+		iterator++; // zwiêkaszmy aktualne pole
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from))//znajdŸ lepsz¹ œcie¿kê
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());//usuñ znalezione pola które nie prowadz¹ do celu
+		}
+	}
+	else if (czy_poprawne_wsp(j + 1, i - 1) && czy_poprawne_wsp(j + 2, i - 2) && tab[j + 1][i - 1] == 1 && tab[j + 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j + 2)) {//przeskok lewo dó³
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j + 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 2, j + 2));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i - 2, j + 2));//dodaj pole do odwiedzanych
+		iterator++;// zwiêkaszmy aktualne pole
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from))//znajdŸ lepsz¹ œcie¿kê
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());//usuñ znalezione pola które nie prowadz¹ do celu
+		}
+	}
+
+	else if (czy_poprawne_wsp(j - 1, i - 1) && tab[j - 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j - 1))//pole lewo góra
+	{
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j - 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j - 1, i - 1) && czy_poprawne_wsp(j - 2, i - 2) && tab[j - 1][i - 1] == 1 && tab[j - 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j - 2)) {//przeskok lewo góra
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j - 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i - 2, j - 2));
+		path_tmp.push_back(sf::Vector2u(i - 2, j - 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j + 1, i + 1) && tab[j + 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j + 1))//pole  prawo dó³
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j + 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j + 1, i + 1) && czy_poprawne_wsp(j + 2, i + 2) && tab[j + 1][i + 1] == 1 && tab[j + 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j + 2)) {//przeskok prawo dó³
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j + 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 2, j + 2));
+		path_tmp.push_back(sf::Vector2u(i + 2, j + 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+
+	else if (czy_poprawne_wsp(j - 1, i + 1) && tab[j - 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j - 1))//pole prawo góra
+	{
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j - 1)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
+		path_tmp.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
+		iterator++; // zwiêkaszmy aktualne
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	else if (czy_poprawne_wsp(j - 1, i + 1) && czy_poprawne_wsp(j - 2, i + 2) && tab[j - 1][i + 1] == 1 && tab[j - 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j - 2)) {//przeskok prawo góra
+
+		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j - 2)) == true)
+		{
+			return false;
+		}
+
+		path.push_back(sf::Vector2u(i + 2, j - 2));
+		path_tmp.push_back(sf::Vector2u(i + 2, j - 2));
+		iterator++;
+
+		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from))
+		{
+			return true;
+		}
+		else
+		{
+			path.erase(path.begin() + iterator, path.end());
+		}
+	}
+	return false;
+
+}
+
+bool Gracz_AI::path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
+	vector<sf::Vector2u> path_tmp;//przetrzymuje odwiedzone pola
+	vector<sf::Vector2u> path_tmp2;
+
+	vector<sf::Vector2u> path_tmp_l;
+	vector<sf::Vector2u> path_tmp_r;
+	bool path_l = false;//czy znaleziono sciezke w prawo
+	bool path_r = false;//czy znaleziono sciezke w lewo
+
+	if (preffer_right_path(tab, path_tmp_r, path_tmp, from, to) == true) {
+		if (path_tmp_r[0] == from)
+		{
+			path.erase(path.begin());
+		}
+		path_r = true;
+	}
+	if (preffer_left_path(tab, path_tmp_l, path_tmp2, from, to) == true) {
+		if (path_tmp_l[0] == from)
+		{
+			path.erase(path.begin());
+		}
+		path_l = true;
+	}
+
 	//cout << "Path L" << endl;
 	//for (int i = 0; i < path_tmp_l.size(); i++)
 	//{
@@ -363,650 +792,6 @@ bool Gracz_AI::find_better_path(int tab[8][8], vector<sf::Vector2u>& path, vecto
 
 }
 
-bool Gracz_AI::preffer_right_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
-	//for (int i = 0; i < path.size(); i++)
-	//{
-	//	cout << path[i].x << ";" << path[i].y << " ";
-	//}
-	//cout << endl;
-
-
-
-
-	int iterator = path.size() - 1; // ostatni dobry moment œcie¿ki
-
-	int i = from.x;
-	int j = from.y;
-
-	if (from == to)
-	{
-		return true;
-	}
-
-	if (czy_poprawne_wsp(j + 1, i + 1) && tab[j + 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j + 1))//pole  prawo dó³
-	{
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j + 1)) == true)
-		{
-			return false;
-		}
-		path_tmp.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
-		path.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j + 1, i + 1) && czy_poprawne_wsp(j + 2, i + 2) && tab[j + 1][i + 1] == 1 && tab[j + 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j + 2)) {//przeskok prawo dó³
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j + 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 2, j + 2));
-		path_tmp.push_back(sf::Vector2u(i + 2, j + 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-
-	else if (czy_poprawne_wsp(j - 1, i + 1) && tab[j - 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j - 1))//pole prawo góra
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j - 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j - 1, i + 1) && czy_poprawne_wsp(j - 2, i + 2) && tab[j - 1][i + 1] == 1 && tab[j - 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j - 2)) {//przeskok prawo góra
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j - 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 2, j - 2));
-		path_tmp.push_back(sf::Vector2u(i + 2, j - 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-
-	else if (czy_poprawne_wsp(j + 1, i - 1) && tab[j + 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j + 1))//pole lewo dó³
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j + 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j + 1, i - 1) && czy_poprawne_wsp(j + 2, i - 2) && tab[j + 1][i - 1] == 1 && tab[j + 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j + 2)) //przeskok lewo dó³
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j + 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 2, j + 2));
-		path_tmp.push_back(sf::Vector2u(i - 2, j + 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-
-	else if (czy_poprawne_wsp(j - 1, i - 1) && tab[j - 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j - 1))//pole lewo góra
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j - 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j - 1, i - 1) && czy_poprawne_wsp(j - 2, i - 2) && tab[j - 1][i - 1] == 1 && tab[j - 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j - 2)) {//przeskok lewo góra
-
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j - 2)) == true)
-		{
-			return false;
-		}
-		path.push_back(sf::Vector2u(i - 2, j - 2));
-		path_tmp.push_back(sf::Vector2u(i - 2, j - 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	return false;
-}
-bool Gracz_AI::preffer_left_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
-
-	//for (int i = 0; i < path.size(); i++)
-	//{
-	//	cout << path[i].x << ";" << path[i].y << " ";
-	//}
-	//cout << endl;
-
-
-
-	int iterator = path.size() - 1; // ostatni dobry moment œcie¿ki
-
-	int i = from.x;
-	int j = from.y;
-
-	if (from == to)
-	{
-		return true;
-	}
-
-	if (czy_poprawne_wsp(j + 1, i - 1) && tab[j + 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j + 1))//pole lewo dó³
-	{
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j + 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i - 1, j + 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 1, j + 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j + 1, i - 1) && czy_poprawne_wsp(j + 2, i - 2) && tab[j + 1][i - 1] == 1 && tab[j + 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j + 2)) {//przeskok lewo dó³
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j + 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 2, j + 2));
-		path_tmp.push_back(sf::Vector2u(i - 2, j + 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 2, j + 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-
-	else if (czy_poprawne_wsp(j - 1, i - 1) && tab[j - 1][i - 1] == 0 && last != sf::Vector2u(i - 1, j - 1))//pole lewo góra
-	{
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 1, j - 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i - 1, j - 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 1, j - 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j - 1, i - 1) && czy_poprawne_wsp(j - 2, i - 2) && tab[j - 1][i - 1] == 1 && tab[j - 2][i - 2] == 0 && last != sf::Vector2u(i - 2, j - 2)) {//przeskok lewo góra
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i - 2, j - 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i - 2, j - 2));
-		path_tmp.push_back(sf::Vector2u(i - 2, j - 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i - 2, j - 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j + 1, i + 1) && tab[j + 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j + 1))//pole  prawo dó³
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j + 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i + 1, j + 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 1, j + 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j + 1, i + 1) && czy_poprawne_wsp(j + 2, i + 2) && tab[j + 1][i + 1] == 1 && tab[j + 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j + 2)) {//przeskok prawo dó³
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j + 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 2, j + 2));
-		path_tmp.push_back(sf::Vector2u(i + 2, j + 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 2, j + 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-
-	else if (czy_poprawne_wsp(j - 1, i + 1) && tab[j - 1][i + 1] == 0 && last != sf::Vector2u(i + 1, j - 1))//pole prawo góra
-	{
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 1, j - 1)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
-		path_tmp.push_back(sf::Vector2u(i + 1, j - 1));//dodaj pole do œcie¿ki
-		iterator++; // zwiêkaszmy aktualne
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca ¿e znaleziono
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 1, j - 1), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	else if (czy_poprawne_wsp(j - 1, i + 1) && czy_poprawne_wsp(j - 2, i + 2) && tab[j - 1][i + 1] == 1 && tab[j - 2][i + 2] == 0 && last != sf::Vector2u(i + 2, j - 2)) {//przeskok prawo góra
-
-		if (path.size() > 1 && czy_bylo(path_tmp, sf::Vector2u(i + 2, j - 2)) == true)
-		{
-			return false;
-		}
-
-		path.push_back(sf::Vector2u(i + 2, j - 2));
-		path_tmp.push_back(sf::Vector2u(i + 2, j - 2));
-		iterator++;
-
-		if (find_better_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from))
-		{
-			return true;
-		}
-		else
-		{
-			path.erase(path.begin() + iterator, path.end());
-		}
-
-		//if (preffer_right_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from) == true) { //rekurencyjnie, jeœli siê znajdzie œcie¿ka to zwraca true (znaleziono)
-		//	return true;
-		//}
-		//else if (preffer_left_path(tab, path, path_tmp, sf::Vector2u(i + 2, j - 2), to, from) == true)
-		//{
-		//	return true;
-		//}
-		//else // jeœli nie to usuwamy znalezion¹ wczeœniej œcie¿kê do aktualnego momentu
-		//{
-		//	path.erase(path.begin() + iterator, path.end());
-		//}
-	}
-	return false;
-
-}
-
-bool Gracz_AI::path(vector<sf::Vector2u> & path, int tab[8][8], sf::Vector2u from, sf::Vector2u to, sf::Vector2u last) {
-	vector<sf::Vector2u> path_tmp;//przetrzymuje odwiedzone pola
-	vector<sf::Vector2u> path_tmp2;
-
-	vector<sf::Vector2u> path_tmp_l;
-	vector<sf::Vector2u> path_tmp_r;
-	bool path_l = false;//czy znaleziono sciezke w prawo
-	bool path_r = false;//czy znaleziono sciezke w lewo
-
-	if (preffer_right_path(tab, path_tmp_r, path_tmp, from, to) == true) {
-		if (path_tmp_r[0] == from)
-		{
-			path.erase(path.begin());
-		}
-		path_r = true;
-	}
-	if (preffer_left_path(tab, path_tmp_l, path_tmp2, from, to) == true) {
-		if (path_tmp_l[0] == from)
-		{
-			path.erase(path.begin());
-		}
-		path_l = true;
-	}
-
-	cout << "Path L" << endl;
-	for (int i = 0; i < path_tmp_l.size(); i++)
-	{
-		cout << path_tmp_l[i].x << ";" << path_tmp_l[i].y << " ";
-	}
-	cout << endl;
-	cout << endl;
-	cout << "Path R" << endl;
-	for (int i = 0; i < path_tmp_r.size(); i++)
-	{
-		cout << path_tmp_r[i].x << ";" << path_tmp_r[i].y << " ";
-	}
-	cout << endl;
-
-
-	if (path_l == true && path_r == true)
-	{
-		if (path_tmp_l.size() > path_tmp_r.size())
-		{
-			path = path_tmp_r;
-		}
-		else
-		{
-			path = path_tmp_l;
-		}
-		return true;
-	}
-	else if (path_l == true)
-	{
-		path = path_tmp_l;
-		return true;
-	}
-	else if (path_r == true)
-	{
-		path = path_tmp_r;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 Gracz_AI::Ruch::Ruch(string t)
 {
 	int x;
@@ -1022,6 +807,10 @@ Gracz_AI::Ruch::Ruch(string t)
 	{
 		throw exception("Blad w danych wejsciowych AI");
 	}
+	if (t[1] != ' ')
+	{
+		throw exception("Blad w danych wejsciowych AI");
+	}
 	if (isdigit(t[2]))
 	{
 		y = t[2] - '0';
@@ -1029,7 +818,14 @@ Gracz_AI::Ruch::Ruch(string t)
 	else
 	{		
 		throw exception("Blad w danych wejsciowych AI");
-
+	}
+	if (t[3] != ' ')
+	{
+		throw exception("Blad w danych wejsciowych AI");
+	}
+	if (Gracz_AI::czy_poprawne_wsp(x, y))
+	{
+		this->from = sf::Vector2u(x, y);
 	}
 	if (isdigit(t[4]))
 	{
@@ -1040,6 +836,10 @@ Gracz_AI::Ruch::Ruch(string t)
 		throw exception("Blad w danych wejsciowych AI");
 
 	}
+	if (t[5] != ' ')
+	{
+		throw exception("Blad w danych wejsciowych AI");
+	}
 	if (isdigit(t[6]))
 	{
 		y1 = t[6] - '0';
@@ -1049,8 +849,13 @@ Gracz_AI::Ruch::Ruch(string t)
 		throw exception("Blad w danych wejsciowych AI");
 
 	}
-
-	this->from = sf::Vector2u(x, y);
-	this->to = sf::Vector2u(x1, y1);
+	if (Gracz_AI::czy_poprawne_wsp(x1, y1))
+	{
+		this->to = sf::Vector2u(x1, y1);
+	}
+	else
+	{
+		throw exception("Blad w danych wejsciowych AI \n dane po za zakresem");
+	}
 
 }

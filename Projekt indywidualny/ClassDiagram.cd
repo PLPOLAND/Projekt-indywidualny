@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz">
-    <Position X="10" Y="0.5" Width="1.5" />
+    <Position X="11.25" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -25,7 +25,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz_AI">
-    <Position X="8.75" Y="5" Width="2" />
+    <Position X="9.75" Y="6" Width="2" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -47,7 +47,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Gracz_Ludzki">
-    <Position X="11" Y="5" Width="1.75" />
+    <Position X="12.25" Y="6" Width="1.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -69,7 +69,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Menu_List">
-    <Position X="4.5" Y="0.75" Width="1.5" />
+    <Position X="16.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gEAAAAAAAAMgIAQAQAIAQAgAAAAIAAAAQAACIAAAQQA=</HashCode>
       <FileName>Menu_List.h</FileName>
@@ -83,7 +83,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Pole_szachowe">
-    <Position X="13.75" Y="0.5" Width="1.75" />
+    <Position X="4.25" Y="0.75" Width="1.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -105,7 +105,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Przycisk">
-    <Position X="4.5" Y="5.75" Width="1.5" />
+    <Position X="16.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>wAIAAgACAAAAAAAAAAIAABAAAAAAAAAoAAEAAACAAAI=</HashCode>
       <FileName>Przycisk.h</FileName>

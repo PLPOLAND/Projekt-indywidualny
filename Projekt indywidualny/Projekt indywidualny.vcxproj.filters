@@ -85,5 +85,14 @@
     <None Include="ClassDiagram1.cd">
       <Filter>Pliki zasobów</Filter>
     </None>
+    <None Include="Zasoby\AI\0.moves">
+      <Filter>Pliki zasobów</Filter>
+    </None>
+    <None Include="Zasoby\AI\1.moves">
+      <Filter>Pliki zasobów</Filter>
+    </None>
+    <None Include="Zasoby\AI\2.moves">
+      <Filter>Pliki zasobów</Filter>
+    </None>
   </ItemGroup>
 </Project>

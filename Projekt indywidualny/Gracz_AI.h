@@ -48,7 +48,7 @@ public:
 
 	sf::Vector2u find_best_pole_dla_piona(Pion* pionek);
 
-	bool czy_poprawne_wsp(int x, int y);
+	static bool czy_poprawne_wsp(int x, int y);
 	bool czy_bylo(vector<sf::Vector2u>& path, sf::Vector2u t); 
 	bool find_better_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0, 0));
 	bool preffer_right_path(int tab[8][8], vector<sf::Vector2u>& path, vector<sf::Vector2u>& path_tmp, sf::Vector2u from, sf::Vector2u to, sf::Vector2u last = sf::Vector2u(0, 0));
